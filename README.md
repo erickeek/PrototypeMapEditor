@@ -1,7 +1,7 @@
 Prototype Map Editor
 ====================
 
-Editor integrando Windows Forms e XNA
+**Editor integrando Windows Forms e XNA**
 
 Funcionalidades finalizadas
 * Editor de metadados do mapa
