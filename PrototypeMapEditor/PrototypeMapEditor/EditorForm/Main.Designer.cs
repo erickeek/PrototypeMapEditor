@@ -51,6 +51,7 @@
             this.BtnEditorDeMapas.TabIndex = 1;
             this.BtnEditorDeMapas.Text = "Editor de Mapas";
             this.BtnEditorDeMapas.UseVisualStyleBackColor = true;
+            this.BtnEditorDeMapas.Click += new System.EventHandler(this.BtnEditorDeMapas_Click);
             // 
             // BtnEditorDePersonagem
             // 

@@ -12,6 +12,11 @@ namespace PrototypeMapEditor.EditorForm
 
         private void BtnEditorDeMetadados_Click(object sender, EventArgs e)
         {
+            new MetadataEditor().ShowDialog();
+        }
+
+        private void BtnEditorDeMapas_Click(object sender, EventArgs e)
+        {
             new MapEditor().ShowDialog();
         }
     }
