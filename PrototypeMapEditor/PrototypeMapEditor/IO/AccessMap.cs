@@ -1,8 +1,8 @@
 ﻿namespace PrototypeMapEditor.IO
 {
-    public class AcessaMapa : AcessaConteudo
+    public class AccessMap : AccessContent
     {
-        protected override string PastaEspecifica()
+        protected override string GetSpecificFolder()
         {
             return "maps";
         }

@@ -10,14 +10,19 @@ namespace PrototypeMapEditor.EditorForm
             InitializeComponent();
         }
 
-        private void BtnEditorDeMetadados_Click(object sender, EventArgs e)
+        private void ButtonMetadataEditor_Click(object sender, EventArgs e)
         {
             new MetadataEditor().ShowDialog();
         }
 
-        private void BtnEditorDeMapas_Click(object sender, EventArgs e)
+        private void ButtonMapEditor_Click(object sender, EventArgs e)
         {
             new MapEditor().ShowDialog();
+        }
+
+        private void ButtonCharacterEditor_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not implemented yet!");
         }
     }
 }

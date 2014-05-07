@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,13 +19,12 @@ namespace PrototypeMapEditor.EditorForm
     {
         private const int ScrollScale = 10;
 
+        private AccessMap _accessMap;
         private Point _startPosition;
         private Point _currentPosition;
+        private Point _offset;
         private bool _isDrawing;
         private bool _isMove;
-
-        private AcessaMapa _acessaMapa;
-        private Point _offset;
 
         public MetadataEditor()
         {
@@ -39,15 +39,15 @@ namespace PrototypeMapEditor.EditorForm
 
         private void MapEditor_Load(object sender, EventArgs e)
         {
-            _acessaMapa = new AcessaMapa();
-            ListBoxMaps.Items.AddRange(_acessaMapa.Listar());
+            _accessMap = new AccessMap();
+            ListBoxMaps.Items.AddRange(_accessMap.List());
         }
 
-        private ObjetoDoMapa GetObjetosDoMapa()
+        private ObjectMap GetObjectMap()
         {
-            return new ObjetoDoMapa
+            return new ObjectMap
                 {
-                    Fonte = new Rectangle(
+                    Source = new Rectangle(
                         Math.Min(_startPosition.X, _currentPosition.X),
                         Math.Min(_startPosition.Y, _currentPosition.Y),
                         Math.Abs(_startPosition.X - _currentPosition.X),
@@ -60,12 +60,12 @@ namespace PrototypeMapEditor.EditorForm
         {
             if (e.Button == MouseButtons.Left)
             {
-                _metadataDisplay.ObjetosDoMapa.ForEach(c => c.Selecionado = false);
+                MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
 
-                _currentPosition = _startPosition = new Point((int)(e.Location.X - _metadataDisplay.Position.X), (int)(e.Location.Y - _metadataDisplay.Position.Y));
+                _currentPosition = _startPosition = CurrentPosition(e);
 
-                var objetosDoMapaAtual = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(o => o.Fonte.Intersects(new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1)));
-                if (objetosDoMapaAtual == null)
+                var actualObjectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => o.Source.Intersects(new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1)));
+                if (actualObjectMap == null)
                 {
                     _isDrawing = true;
                 }
@@ -73,12 +73,12 @@ namespace PrototypeMapEditor.EditorForm
                 {
                     _isMove = true;
 
-                    _metadataDisplay.ObjetosDoMapaAtual = objetosDoMapaAtual;
-                    _metadataDisplay.ObjetosDoMapaAtual.Selecionado = true;
+                    MetadataDisplay.ActualObjectMap = actualObjectMap;
+                    MetadataDisplay.ActualObjectMap.Selected = true;
 
                     _offset = _currentPosition - new Size(
-                        _metadataDisplay.ObjetosDoMapaAtual.Fonte.X,
-                        _metadataDisplay.ObjetosDoMapaAtual.Fonte.Y
+                        MetadataDisplay.ActualObjectMap.Source.X,
+                        MetadataDisplay.ActualObjectMap.Source.Y
                     );
                 }
             }
@@ -89,9 +89,9 @@ namespace PrototypeMapEditor.EditorForm
             if (_isDrawing)
             {
                 _isDrawing = false;
-                var rc = GetObjetosDoMapa();
-                if (rc.Fonte.Width > 0 && rc.Fonte.Height > 0)
-                    _metadataDisplay.ObjetosDoMapa.Add(rc);
+                var rc = GetObjectMap();
+                if (rc.Source.Width > 0 && rc.Source.Height > 0)
+                    MetadataDisplay.ObjectsInMap.Add(rc);
             }
 
             if (_isMove)
@@ -104,19 +104,19 @@ namespace PrototypeMapEditor.EditorForm
 
         private void MapDisplay_MouseMove(object sender, MouseEventArgs e)
         {
-            _currentPosition = new Point((int)(e.Location.X - _metadataDisplay.Position.X), (int)(e.Location.Y - _metadataDisplay.Position.Y));
+            _currentPosition = CurrentPosition(e);
 
             if (_isDrawing)
             {
-                _metadataDisplay.ObjetosDoMapaAtual = GetObjetosDoMapa();
+                MetadataDisplay.ActualObjectMap = GetObjectMap();
             }
 
             if (_isMove)
             {
-                _metadataDisplay.ObjetosDoMapaAtual.Fonte.X = _currentPosition.X - _offset.X;
-                _metadataDisplay.ObjetosDoMapaAtual.Fonte.Y = _currentPosition.Y - _offset.Y;
+                MetadataDisplay.ActualObjectMap.Source.X = _currentPosition.X - _offset.X;
+                MetadataDisplay.ActualObjectMap.Source.Y = _currentPosition.Y - _offset.Y;
 
-                _metadataDisplay.Invalidate();
+                MetadataDisplay.Invalidate();
             }
 
             if (_isDrawing || _isMove)
@@ -125,105 +125,110 @@ namespace PrototypeMapEditor.EditorForm
             }
             else
             {
-                _metadataDisplay.ObjetosDoMapaAtual = null;
+                MetadataDisplay.ActualObjectMap = null;
             }
         }
 
-        private void btnLoadMap_Click(object sender, EventArgs e)
+        private Point CurrentPosition(MouseEventArgs e)
+        {
+            return new Point((int)(e.Location.X - MetadataDisplay.Position.X), (int)(e.Location.Y - MetadataDisplay.Position.Y));
+        }
+
+        private void ButtonLoadMap_Click(object sender, EventArgs e)
         {
             var selectedFile = (string)ListBoxMaps.SelectedItem;
 
             if (selectedFile == null)
                 return;
 
-            var fileName = _acessaMapa.RecuperarCaminhoCompleto(selectedFile);
+            var fileName = _accessMap.GetFullPath(selectedFile);
             if (!File.Exists(fileName))
                 return;
 
-            _metadataDisplay.LoadContent(_acessaMapa.RecuperarCaminhoComPastaEspecificaSemExtensao(selectedFile));
+            MetadataDisplay.LoadContent(_accessMap.GetSpecifcFolderWithoutExtension(selectedFile));
 
-            hScrollBar1.Maximum = (_metadataDisplay.Texture.Width - _metadataDisplay.Width) / ScrollScale;
-            vScrollBar1.Maximum = (_metadataDisplay.Texture.Height - _metadataDisplay.Height) / ScrollScale;
+            HScrollBarMetadataDisplay.Maximum = (MetadataDisplay.Texture.Width - MetadataDisplay.Width) / ScrollScale;
+            VScrollBarMetadataDisplay.Maximum = (MetadataDisplay.Texture.Height - MetadataDisplay.Height) / ScrollScale;
         }
 
-        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void HScrollBarMetadataEditor_Scroll(object sender, ScrollEventArgs e)
         {
             UpdateScroll();
         }
 
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void VScrollBarMetatadaEditor_Scroll(object sender, ScrollEventArgs e)
         {
             UpdateScroll();
         }
 
         private void UpdateScroll()
         {
-            _metadataDisplay.Position.X = -hScrollBar1.Value * ScrollScale;
-            _metadataDisplay.Position.Y = -vScrollBar1.Value * ScrollScale;
+            MetadataDisplay.Position.X = -HScrollBarMetadataDisplay.Value * ScrollScale;
+            MetadataDisplay.Position.Y = -VScrollBarMetadataDisplay.Value * ScrollScale;
             UpdateView();
         }
 
-        private void listBoxMaps_DoubleClick(object sender, EventArgs e)
+        private void ListBoxMaps_DoubleClick(object sender, EventArgs e)
         {
-            btnLoadMap_Click(null, e);
+            ButtonLoadMap_Click(null, e);
         }
 
         private void UpdateView()
         {
-            _metadataDisplay.Invalidate();
+            MetadataDisplay.Invalidate();
 
-            if (_metadataDisplay.ObjetosDoMapaAtual != null)
+            if (MetadataDisplay.ActualObjectMap != null)
             {
-                BtnExcluir.Enabled = TxtName.Enabled = TxtX.Enabled = TxtY.Enabled = TxtWidth.Enabled = TxtHeight.Enabled = true;
+                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = true;
 
-                TxtX.Text = _metadataDisplay.ObjetosDoMapaAtual.Fonte.X.ToString();
-                TxtY.Text = _metadataDisplay.ObjetosDoMapaAtual.Fonte.Y.ToString();
-                TxtWidth.Text = _metadataDisplay.ObjetosDoMapaAtual.Fonte.Width.ToString();
-                TxtHeight.Text = _metadataDisplay.ObjetosDoMapaAtual.Fonte.Height.ToString();
-                TxtName.Text = _metadataDisplay.ObjetosDoMapaAtual.Nome;
+                TextX.Text = MetadataDisplay.ActualObjectMap.Source.X.ToString(CultureInfo.InvariantCulture);
+                TextY.Text = MetadataDisplay.ActualObjectMap.Source.Y.ToString(CultureInfo.InvariantCulture);
+                TextWidth.Text = MetadataDisplay.ActualObjectMap.Source.Width.ToString(CultureInfo.InvariantCulture);
+                TextHeight.Text = MetadataDisplay.ActualObjectMap.Source.Height.ToString(CultureInfo.InvariantCulture);
+                TextName.Text = MetadataDisplay.ActualObjectMap.Name;
             }
-            else if (_metadataDisplay.ObjetosDoMapa.All(c => !c.Selecionado))
+            else if (MetadataDisplay.ObjectsInMap.All(c => !c.Selected))
             {
-                BtnExcluir.Enabled = TxtName.Enabled = TxtX.Enabled = TxtY.Enabled = TxtWidth.Enabled = TxtHeight.Enabled = false;
+                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = false;
             }
         }
 
-        private void TxtX_TextChanged(object sender, EventArgs e)
+        private void TextX_TextChanged(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
-                objetoDoMapa.Fonte.X = TxtX.Text.ToInt32();
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+                objectMap.Source.X = TextX.Text.ToInt32();
         }
 
-        private void TxtY_TextChanged(object sender, EventArgs e)
+        private void TextY_TextChanged(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
-                objetoDoMapa.Fonte.Y = TxtY.Text.ToInt32();
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+                objectMap.Source.Y = TextY.Text.ToInt32();
         }
 
-        private void TxtWidth_TextChanged(object sender, EventArgs e)
+        private void TextWidth_TextChanged(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
-                objetoDoMapa.Fonte.Width = TxtWidth.Text.ToInt32();
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+                objectMap.Source.Width = TextWidth.Text.ToInt32();
         }
 
-        private void TxtHeight_TextChanged(object sender, EventArgs e)
+        private void TextHeight_TextChanged(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
-                objetoDoMapa.Fonte.Height = TxtHeight.Text.ToInt32();
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+                objectMap.Source.Height = TextHeight.Text.ToInt32();
         }
 
-        private void TxtName_TextChanged(object sender, EventArgs e)
+        private void TextName_TextChanged(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
-                objetoDoMapa.Nome = TxtName.Text;
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+                objectMap.Name = TextName.Text;
         }
 
-        private void Txt_KeyDown(object sender, KeyEventArgs e)
+        private void Text_KeyDown(object sender, KeyEventArgs e)
         {
             var textBox = ((TextBox)sender);
 
@@ -231,49 +236,49 @@ namespace PrototypeMapEditor.EditorForm
             if (e.KeyCode == Keys.Up)
             {
                 valor = Math.Min(++valor, 1000);
-                textBox.Text = valor.ToString();
+                textBox.Text = valor.ToString(CultureInfo.InvariantCulture);
             }
             else if (e.KeyCode == Keys.Down)
             {
                 valor = Math.Max(--valor, 0);
-                textBox.Text = valor.ToString();
+                textBox.Text = valor.ToString(CultureInfo.InvariantCulture);
             }
         }
 
-        private void BtnExcluir_Click(object sender, EventArgs e)
+        private void ButtonRemove_Click(object sender, EventArgs e)
         {
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(c => c.Selecionado);
-            if (objetoDoMapa != null)
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
             {
-                _metadataDisplay.ObjetosDoMapa.Remove(objetoDoMapa);
-                _metadataDisplay.ObjetosDoMapaAtual = null;
+                MetadataDisplay.ObjectsInMap.Remove(objectMap);
+                MetadataDisplay.ActualObjectMap = null;
             }
         }
 
-        private void BtnExportar_Click(object sender, EventArgs e)
+        private void ButtonExport_Click(object sender, EventArgs e)
         {
             var selectedFile = (string)ListBoxMaps.SelectedItem;
 
             if (selectedFile == null)
                 return;
 
-            var fileName = _acessaMapa.RecuperarCaminhoCompleto(selectedFile);
+            var fileName = _accessMap.GetFullPath(selectedFile);
             if (!File.Exists(fileName))
                 return;
 
-            if (!_metadataDisplay.ObjetosDoMapa.Any())
+            if (!MetadataDisplay.ObjectsInMap.Any())
             {
-                MessageBox.Show("Crie objetos antes de exportar!", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Create objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var objetoDoMapa = _metadataDisplay.ObjetosDoMapa.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Nome));
+            var objetoDoMapa = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Name));
             if (objetoDoMapa != null)
             {
-                MessageBox.Show("Nomeie todos os objetos antes de exportar!", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                _metadataDisplay.ObjetosDoMapa.ForEach(c => c.Selecionado = false);
-                objetoDoMapa.Selecionado = true;
-                _metadataDisplay.ObjetosDoMapaAtual = objetoDoMapa;
+                MessageBox.Show("Name all the objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
+                objetoDoMapa.Selected = true;
+                MetadataDisplay.ActualObjectMap = objetoDoMapa;
                 UpdateView();
                 return;
             }
@@ -282,7 +287,7 @@ namespace PrototypeMapEditor.EditorForm
                 {
                     AutoUpgradeEnabled = true,
                     AddExtension = true,
-                    Title = "Exportar metadado do mapa",
+                    Title = "Export metadata map",
                     DefaultExt = "bmm",
                     Filter = "Bantu Metadata Map (*.bmm)|*.bmm",
                     FileName = "Untitled"
@@ -290,36 +295,36 @@ namespace PrototypeMapEditor.EditorForm
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                var acaoSalvarMetadadosDoMapa = new AcaoSalvarMetadadosDoMapa(new MetadadoMapa
+                var action = new ActionSaveMetadataMap(new MetadataMap
                     {
-                        ObjetoDoMapas = _metadataDisplay.ObjetosDoMapa,
-                        NomeDoArquivo = selectedFile
+                        ObjectsInMap = MetadataDisplay.ObjectsInMap,
+                        FileName = selectedFile
                     }, dialog.FileName);
-                acaoSalvarMetadadosDoMapa.Executar();
+                action.Executar();
             }
         }
 
-        private void BtnInportar_Click(object sender, EventArgs e)
+        private void ButtonImport_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog
                 {
                     AutoUpgradeEnabled = true,
                     AddExtension = true,
-                    Title = "Importar metadado do mapa",
+                    Title = "Import metadata map",
                     DefaultExt = "bmm",
                     Filter = "Bantu Metadata Map (*.bmm)|*.bmm",
                 };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                var acaoCarregarMetdadosDoMapa = new AcaoCarregarMetdadosDoMapa(dialog.FileName);
+                var acaoCarregarMetdadosDoMapa = new ActionLoadMetadataMap(dialog.FileName);
                 acaoCarregarMetdadosDoMapa.Executar();
 
-                var metadadoMapa = acaoCarregarMetdadosDoMapa.MetadadoMapa;
+                var metadadoMapa = acaoCarregarMetdadosDoMapa.MetadataMap;
 
-                ListBoxMaps.SelectedItem = metadadoMapa.NomeDoArquivo;
-                btnLoadMap_Click(null, e);
+                ListBoxMaps.SelectedItem = metadadoMapa.FileName;
+                ButtonLoadMap_Click(null, e);
 
-                _metadataDisplay.ObjetosDoMapa = metadadoMapa.ObjetoDoMapas.ToList();
+                MetadataDisplay.ObjectsInMap = metadadoMapa.ObjectsInMap.ToList();
                 UpdateView();
             }
         }

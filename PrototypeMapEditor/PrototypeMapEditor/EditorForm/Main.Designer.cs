@@ -28,59 +28,60 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.BtnEditorDeMetadados = new System.Windows.Forms.Button();
-            this.BtnEditorDeMapas = new System.Windows.Forms.Button();
-            this.BtnEditorDePersonagem = new System.Windows.Forms.Button();
+            this.ButtonMetadataEditor = new System.Windows.Forms.Button();
+            this.ButtonMapEditor = new System.Windows.Forms.Button();
+            this.ButtonCharacterEditor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // BtnEditorDeMetadados
+            // ButtonMetadataEditor
             // 
-            this.BtnEditorDeMetadados.Location = new System.Drawing.Point(12, 12);
-            this.BtnEditorDeMetadados.Name = "BtnEditorDeMetadados";
-            this.BtnEditorDeMetadados.Size = new System.Drawing.Size(152, 23);
-            this.BtnEditorDeMetadados.TabIndex = 0;
-            this.BtnEditorDeMetadados.Text = "Editor de metadados";
-            this.BtnEditorDeMetadados.UseVisualStyleBackColor = true;
-            this.BtnEditorDeMetadados.Click += new System.EventHandler(this.BtnEditorDeMetadados_Click);
+            this.ButtonMetadataEditor.Location = new System.Drawing.Point(12, 12);
+            this.ButtonMetadataEditor.Name = "ButtonMetadataEditor";
+            this.ButtonMetadataEditor.Size = new System.Drawing.Size(152, 23);
+            this.ButtonMetadataEditor.TabIndex = 0;
+            this.ButtonMetadataEditor.Text = "Metadata Editor";
+            this.ButtonMetadataEditor.UseVisualStyleBackColor = true;
+            this.ButtonMetadataEditor.Click += new System.EventHandler(this.ButtonMetadataEditor_Click);
             // 
-            // BtnEditorDeMapas
+            // ButtonMapEditor
             // 
-            this.BtnEditorDeMapas.Location = new System.Drawing.Point(12, 42);
-            this.BtnEditorDeMapas.Name = "BtnEditorDeMapas";
-            this.BtnEditorDeMapas.Size = new System.Drawing.Size(152, 23);
-            this.BtnEditorDeMapas.TabIndex = 1;
-            this.BtnEditorDeMapas.Text = "Editor de Mapas";
-            this.BtnEditorDeMapas.UseVisualStyleBackColor = true;
-            this.BtnEditorDeMapas.Click += new System.EventHandler(this.BtnEditorDeMapas_Click);
+            this.ButtonMapEditor.Location = new System.Drawing.Point(12, 42);
+            this.ButtonMapEditor.Name = "ButtonMapEditor";
+            this.ButtonMapEditor.Size = new System.Drawing.Size(152, 23);
+            this.ButtonMapEditor.TabIndex = 1;
+            this.ButtonMapEditor.Text = "Map Editor";
+            this.ButtonMapEditor.UseVisualStyleBackColor = true;
+            this.ButtonMapEditor.Click += new System.EventHandler(this.ButtonMapEditor_Click);
             // 
-            // BtnEditorDePersonagem
+            // ButtonCharacterEditor
             // 
-            this.BtnEditorDePersonagem.Location = new System.Drawing.Point(13, 72);
-            this.BtnEditorDePersonagem.Name = "BtnEditorDePersonagem";
-            this.BtnEditorDePersonagem.Size = new System.Drawing.Size(151, 23);
-            this.BtnEditorDePersonagem.TabIndex = 2;
-            this.BtnEditorDePersonagem.Text = "Editor de personsagem";
-            this.BtnEditorDePersonagem.UseVisualStyleBackColor = true;
+            this.ButtonCharacterEditor.Location = new System.Drawing.Point(13, 72);
+            this.ButtonCharacterEditor.Name = "ButtonCharacterEditor";
+            this.ButtonCharacterEditor.Size = new System.Drawing.Size(151, 23);
+            this.ButtonCharacterEditor.TabIndex = 2;
+            this.ButtonCharacterEditor.Text = "Character Editor";
+            this.ButtonCharacterEditor.UseVisualStyleBackColor = true;
+            this.ButtonCharacterEditor.Click += new System.EventHandler(this.ButtonCharacterEditor_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(176, 109);
-            this.Controls.Add(this.BtnEditorDePersonagem);
-            this.Controls.Add(this.BtnEditorDeMapas);
-            this.Controls.Add(this.BtnEditorDeMetadados);
+            this.Controls.Add(this.ButtonCharacterEditor);
+            this.Controls.Add(this.ButtonMapEditor);
+            this.Controls.Add(this.ButtonMetadataEditor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Main";
-            this.Text = "Protótipo de Editor";
+            this.Text = "Prototype Editor";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button BtnEditorDeMetadados;
-        private System.Windows.Forms.Button BtnEditorDeMapas;
-        private System.Windows.Forms.Button BtnEditorDePersonagem;
+        private System.Windows.Forms.Button ButtonMetadataEditor;
+        private System.Windows.Forms.Button ButtonMapEditor;
+        private System.Windows.Forms.Button ButtonCharacterEditor;
     }
 }

@@ -28,68 +28,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this._metadataDisplay = new PrototypeMapEditor.CustomControls.MetadataDisplay();
+            this.HScrollBarMetadataDisplay = new System.Windows.Forms.HScrollBar();
+            this.VScrollBarMetadataDisplay = new System.Windows.Forms.VScrollBar();
+            this.PanelMetadataDisplay = new System.Windows.Forms.Panel();
+            this.MetadataDisplay = new PrototypeMapEditor.CustomControls.MetadataDisplay();
             this.ListBoxMaps = new System.Windows.Forms.ListBox();
-            this.btnLoadMap = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.TxtName = new System.Windows.Forms.TextBox();
-            this.BtnExcluir = new System.Windows.Forms.Button();
-            this.TxtHeight = new System.Windows.Forms.TextBox();
-            this.TxtWidth = new System.Windows.Forms.TextBox();
-            this.TxtY = new System.Windows.Forms.TextBox();
-            this.TxtX = new System.Windows.Forms.TextBox();
-            this.BtnExportar = new System.Windows.Forms.Button();
-            this.BtnInportar = new System.Windows.Forms.Button();
-            this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.ButtonLoadMap = new System.Windows.Forms.Button();
+            this.PanelProperties = new System.Windows.Forms.Panel();
+            this.LabelHeight = new System.Windows.Forms.Label();
+            this.LabelWidth = new System.Windows.Forms.Label();
+            this.LabelY = new System.Windows.Forms.Label();
+            this.LabelX = new System.Windows.Forms.Label();
+            this.LabelName = new System.Windows.Forms.Label();
+            this.TextName = new System.Windows.Forms.TextBox();
+            this.ButtonRemove = new System.Windows.Forms.Button();
+            this.TextHeight = new System.Windows.Forms.TextBox();
+            this.TextWidth = new System.Windows.Forms.TextBox();
+            this.TextY = new System.Windows.Forms.TextBox();
+            this.TextX = new System.Windows.Forms.TextBox();
+            this.ButtonExport = new System.Windows.Forms.Button();
+            this.ButtonImport = new System.Windows.Forms.Button();
+            this.PanelMetadataDisplay.SuspendLayout();
+            this.PanelProperties.SuspendLayout();
             this.SuspendLayout();
             // 
-            // hScrollBar1
+            // HScrollBarMetadataDisplay
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(13, 528);
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(679, 17);
-            this.hScrollBar1.TabIndex = 1;
-            this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
+            this.HScrollBarMetadataDisplay.Location = new System.Drawing.Point(13, 528);
+            this.HScrollBarMetadataDisplay.Name = "HScrollBarMetadataDisplay";
+            this.HScrollBarMetadataDisplay.Size = new System.Drawing.Size(679, 17);
+            this.HScrollBarMetadataDisplay.TabIndex = 1;
+            this.HScrollBarMetadataDisplay.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBarMetadataEditor_Scroll);
             // 
-            // vScrollBar1
+            // VScrollBarMetadataDisplay
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(695, 13);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 512);
-            this.vScrollBar1.TabIndex = 2;
-            this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
+            this.VScrollBarMetadataDisplay.Location = new System.Drawing.Point(695, 13);
+            this.VScrollBarMetadataDisplay.Name = "VScrollBarMetadataDisplay";
+            this.VScrollBarMetadataDisplay.Size = new System.Drawing.Size(17, 512);
+            this.VScrollBarMetadataDisplay.TabIndex = 2;
+            this.VScrollBarMetadataDisplay.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScrollBarMetatadaEditor_Scroll);
             // 
-            // panel2
+            // PanelMetadataDisplay
             // 
-            this.panel2.AutoScroll = true;
-            this.panel2.Controls.Add(this._metadataDisplay);
-            this.panel2.Location = new System.Drawing.Point(13, 13);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(679, 512);
-            this.panel2.TabIndex = 3;
+            this.PanelMetadataDisplay.AutoScroll = true;
+            this.PanelMetadataDisplay.Controls.Add(this.MetadataDisplay);
+            this.PanelMetadataDisplay.Location = new System.Drawing.Point(13, 13);
+            this.PanelMetadataDisplay.Name = "PanelMetadataDisplay";
+            this.PanelMetadataDisplay.Size = new System.Drawing.Size(679, 512);
+            this.PanelMetadataDisplay.TabIndex = 3;
             // 
             // MetadataDisplay
             // 
-            this._metadataDisplay.Location = new System.Drawing.Point(0, 0);
-            this._metadataDisplay.Name = "_metadataDisplay";
-            this._metadataDisplay.ObjetosDoMapa = null;
-            this._metadataDisplay.ObjetosDoMapaAtual = null;
-            this._metadataDisplay.Size = new System.Drawing.Size(679, 512);
-            this._metadataDisplay.TabIndex = 0;
-            this._metadataDisplay.Text = "mapDisplay";
-            this._metadataDisplay.Texture = null;
-            this._metadataDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
-            this._metadataDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
-            this._metadataDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
+            this.MetadataDisplay.ActualObjectMap = null;
+            this.MetadataDisplay.Location = new System.Drawing.Point(0, 0);
+            this.MetadataDisplay.Name = "MetadataDisplay";
+            this.MetadataDisplay.ObjectsInMap = null;
+            this.MetadataDisplay.Size = new System.Drawing.Size(679, 512);
+            this.MetadataDisplay.TabIndex = 0;
+            this.MetadataDisplay.Text = "mapDisplay";
+            this.MetadataDisplay.Texture = null;
+            this.MetadataDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
+            this.MetadataDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
+            this.MetadataDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
             // 
             // ListBoxMaps
             // 
@@ -98,198 +98,198 @@
             this.ListBoxMaps.Name = "ListBoxMaps";
             this.ListBoxMaps.Size = new System.Drawing.Size(185, 199);
             this.ListBoxMaps.TabIndex = 4;
-            this.ListBoxMaps.DoubleClick += new System.EventHandler(this.listBoxMaps_DoubleClick);
+            this.ListBoxMaps.DoubleClick += new System.EventHandler(this.ListBoxMaps_DoubleClick);
             // 
-            // btnLoadMap
+            // ButtonLoadMap
             // 
-            this.btnLoadMap.Location = new System.Drawing.Point(715, 217);
-            this.btnLoadMap.Name = "btnLoadMap";
-            this.btnLoadMap.Size = new System.Drawing.Size(185, 23);
-            this.btnLoadMap.TabIndex = 5;
-            this.btnLoadMap.Text = "Carregar";
-            this.btnLoadMap.UseVisualStyleBackColor = true;
-            this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
+            this.ButtonLoadMap.Location = new System.Drawing.Point(715, 217);
+            this.ButtonLoadMap.Name = "ButtonLoadMap";
+            this.ButtonLoadMap.Size = new System.Drawing.Size(185, 23);
+            this.ButtonLoadMap.TabIndex = 5;
+            this.ButtonLoadMap.Text = "Load";
+            this.ButtonLoadMap.UseVisualStyleBackColor = true;
+            this.ButtonLoadMap.Click += new System.EventHandler(this.ButtonLoadMap_Click);
             // 
-            // panel1
+            // PanelProperties
             // 
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.TxtName);
-            this.panel1.Controls.Add(this.BtnExcluir);
-            this.panel1.Controls.Add(this.TxtHeight);
-            this.panel1.Controls.Add(this.TxtWidth);
-            this.panel1.Controls.Add(this.TxtY);
-            this.panel1.Controls.Add(this.TxtX);
-            this.panel1.Location = new System.Drawing.Point(716, 327);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(184, 198);
-            this.panel1.TabIndex = 6;
+            this.PanelProperties.Controls.Add(this.LabelHeight);
+            this.PanelProperties.Controls.Add(this.LabelWidth);
+            this.PanelProperties.Controls.Add(this.LabelY);
+            this.PanelProperties.Controls.Add(this.LabelX);
+            this.PanelProperties.Controls.Add(this.LabelName);
+            this.PanelProperties.Controls.Add(this.TextName);
+            this.PanelProperties.Controls.Add(this.ButtonRemove);
+            this.PanelProperties.Controls.Add(this.TextHeight);
+            this.PanelProperties.Controls.Add(this.TextWidth);
+            this.PanelProperties.Controls.Add(this.TextY);
+            this.PanelProperties.Controls.Add(this.TextX);
+            this.PanelProperties.Location = new System.Drawing.Point(716, 327);
+            this.PanelProperties.Name = "PanelProperties";
+            this.PanelProperties.Size = new System.Drawing.Size(184, 198);
+            this.PanelProperties.TabIndex = 6;
             // 
-            // label5
+            // LabelHeight
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 111);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Height";
+            this.LabelHeight.AutoSize = true;
+            this.LabelHeight.Location = new System.Drawing.Point(7, 111);
+            this.LabelHeight.Name = "LabelHeight";
+            this.LabelHeight.Size = new System.Drawing.Size(38, 13);
+            this.LabelHeight.TabIndex = 10;
+            this.LabelHeight.Text = "Height";
             // 
-            // label4
+            // LabelWidth
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 85);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Width";
+            this.LabelWidth.AutoSize = true;
+            this.LabelWidth.Location = new System.Drawing.Point(7, 85);
+            this.LabelWidth.Name = "LabelWidth";
+            this.LabelWidth.Size = new System.Drawing.Size(35, 13);
+            this.LabelWidth.TabIndex = 9;
+            this.LabelWidth.Text = "Width";
             // 
-            // label3
+            // LabelY
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 59);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Y";
+            this.LabelY.AutoSize = true;
+            this.LabelY.Location = new System.Drawing.Point(7, 59);
+            this.LabelY.Name = "LabelY";
+            this.LabelY.Size = new System.Drawing.Size(14, 13);
+            this.LabelY.TabIndex = 8;
+            this.LabelY.Text = "Y";
             // 
-            // label2
+            // LabelX
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "X";
+            this.LabelX.AutoSize = true;
+            this.LabelX.Location = new System.Drawing.Point(7, 33);
+            this.LabelX.Name = "LabelX";
+            this.LabelX.Size = new System.Drawing.Size(14, 13);
+            this.LabelX.TabIndex = 7;
+            this.LabelX.Text = "X";
             // 
-            // label1
+            // LabelName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Nome";
+            this.LabelName.AutoSize = true;
+            this.LabelName.Location = new System.Drawing.Point(7, 7);
+            this.LabelName.Name = "LabelName";
+            this.LabelName.Size = new System.Drawing.Size(35, 13);
+            this.LabelName.TabIndex = 6;
+            this.LabelName.Text = "Name";
             // 
-            // TxtName
+            // TextName
             // 
-            this.TxtName.Location = new System.Drawing.Point(81, 4);
-            this.TxtName.Name = "TxtName";
-            this.TxtName.Size = new System.Drawing.Size(100, 20);
-            this.TxtName.TabIndex = 5;
-            this.TxtName.TextChanged += new System.EventHandler(this.TxtName_TextChanged);
+            this.TextName.Location = new System.Drawing.Point(81, 4);
+            this.TextName.Name = "TextName";
+            this.TextName.Size = new System.Drawing.Size(100, 20);
+            this.TextName.TabIndex = 5;
+            this.TextName.TextChanged += new System.EventHandler(this.TextName_TextChanged);
             // 
-            // BtnExcluir
+            // ButtonRemove
             // 
-            this.BtnExcluir.Location = new System.Drawing.Point(4, 132);
-            this.BtnExcluir.Name = "BtnExcluir";
-            this.BtnExcluir.Size = new System.Drawing.Size(177, 23);
-            this.BtnExcluir.TabIndex = 4;
-            this.BtnExcluir.Text = "Remover";
-            this.BtnExcluir.UseVisualStyleBackColor = true;
-            this.BtnExcluir.Click += new System.EventHandler(this.BtnExcluir_Click);
+            this.ButtonRemove.Location = new System.Drawing.Point(4, 132);
+            this.ButtonRemove.Name = "ButtonRemove";
+            this.ButtonRemove.Size = new System.Drawing.Size(177, 23);
+            this.ButtonRemove.TabIndex = 4;
+            this.ButtonRemove.Text = "Remover";
+            this.ButtonRemove.UseVisualStyleBackColor = true;
+            this.ButtonRemove.Click += new System.EventHandler(this.ButtonRemove_Click);
             // 
-            // TxtHeight
+            // TextHeight
             // 
-            this.TxtHeight.Location = new System.Drawing.Point(81, 108);
-            this.TxtHeight.Name = "TxtHeight";
-            this.TxtHeight.Size = new System.Drawing.Size(100, 20);
-            this.TxtHeight.TabIndex = 3;
-            this.TxtHeight.TextChanged += new System.EventHandler(this.TxtHeight_TextChanged);
-            this.TxtHeight.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_KeyDown);
+            this.TextHeight.Location = new System.Drawing.Point(81, 108);
+            this.TextHeight.Name = "TextHeight";
+            this.TextHeight.Size = new System.Drawing.Size(100, 20);
+            this.TextHeight.TabIndex = 3;
+            this.TextHeight.TextChanged += new System.EventHandler(this.TextHeight_TextChanged);
+            this.TextHeight.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Text_KeyDown);
             // 
-            // TxtWidth
+            // TextWidth
             // 
-            this.TxtWidth.Location = new System.Drawing.Point(81, 82);
-            this.TxtWidth.Name = "TxtWidth";
-            this.TxtWidth.Size = new System.Drawing.Size(100, 20);
-            this.TxtWidth.TabIndex = 2;
-            this.TxtWidth.TextChanged += new System.EventHandler(this.TxtWidth_TextChanged);
-            this.TxtWidth.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_KeyDown);
+            this.TextWidth.Location = new System.Drawing.Point(81, 82);
+            this.TextWidth.Name = "TextWidth";
+            this.TextWidth.Size = new System.Drawing.Size(100, 20);
+            this.TextWidth.TabIndex = 2;
+            this.TextWidth.TextChanged += new System.EventHandler(this.TextWidth_TextChanged);
+            this.TextWidth.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Text_KeyDown);
             // 
-            // TxtY
+            // TextY
             // 
-            this.TxtY.Location = new System.Drawing.Point(81, 56);
-            this.TxtY.Name = "TxtY";
-            this.TxtY.Size = new System.Drawing.Size(100, 20);
-            this.TxtY.TabIndex = 1;
-            this.TxtY.TextChanged += new System.EventHandler(this.TxtY_TextChanged);
-            this.TxtY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_KeyDown);
+            this.TextY.Location = new System.Drawing.Point(81, 56);
+            this.TextY.Name = "TextY";
+            this.TextY.Size = new System.Drawing.Size(100, 20);
+            this.TextY.TabIndex = 1;
+            this.TextY.TextChanged += new System.EventHandler(this.TextY_TextChanged);
+            this.TextY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Text_KeyDown);
             // 
-            // TxtX
+            // TextX
             // 
-            this.TxtX.Location = new System.Drawing.Point(81, 30);
-            this.TxtX.Name = "TxtX";
-            this.TxtX.Size = new System.Drawing.Size(100, 20);
-            this.TxtX.TabIndex = 0;
-            this.TxtX.TextChanged += new System.EventHandler(this.TxtX_TextChanged);
-            this.TxtX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_KeyDown);
+            this.TextX.Location = new System.Drawing.Point(81, 30);
+            this.TextX.Name = "TextX";
+            this.TextX.Size = new System.Drawing.Size(100, 20);
+            this.TextX.TabIndex = 0;
+            this.TextX.TextChanged += new System.EventHandler(this.TextX_TextChanged);
+            this.TextX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Text_KeyDown);
             // 
-            // BtnExportar
+            // ButtonExport
             // 
-            this.BtnExportar.Location = new System.Drawing.Point(715, 246);
-            this.BtnExportar.Name = "BtnExportar";
-            this.BtnExportar.Size = new System.Drawing.Size(185, 23);
-            this.BtnExportar.TabIndex = 7;
-            this.BtnExportar.Text = "Exportar";
-            this.BtnExportar.UseVisualStyleBackColor = true;
-            this.BtnExportar.Click += new System.EventHandler(this.BtnExportar_Click);
+            this.ButtonExport.Location = new System.Drawing.Point(715, 246);
+            this.ButtonExport.Name = "ButtonExport";
+            this.ButtonExport.Size = new System.Drawing.Size(185, 23);
+            this.ButtonExport.TabIndex = 7;
+            this.ButtonExport.Text = "Export";
+            this.ButtonExport.UseVisualStyleBackColor = true;
+            this.ButtonExport.Click += new System.EventHandler(this.ButtonExport_Click);
             // 
-            // BtnInportar
+            // ButtonImport
             // 
-            this.BtnInportar.Location = new System.Drawing.Point(716, 273);
-            this.BtnInportar.Name = "BtnInportar";
-            this.BtnInportar.Size = new System.Drawing.Size(184, 23);
-            this.BtnInportar.TabIndex = 8;
-            this.BtnInportar.Text = "Importar";
-            this.BtnInportar.UseVisualStyleBackColor = true;
-            this.BtnInportar.Click += new System.EventHandler(this.BtnInportar_Click);
+            this.ButtonImport.Location = new System.Drawing.Point(716, 273);
+            this.ButtonImport.Name = "ButtonImport";
+            this.ButtonImport.Size = new System.Drawing.Size(184, 23);
+            this.ButtonImport.TabIndex = 8;
+            this.ButtonImport.Text = "Import";
+            this.ButtonImport.UseVisualStyleBackColor = true;
+            this.ButtonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
             // MetadataEditor
             // 
             this.ClientSize = new System.Drawing.Size(912, 563);
-            this.Controls.Add(this.BtnInportar);
-            this.Controls.Add(this.BtnExportar);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnLoadMap);
+            this.Controls.Add(this.ButtonImport);
+            this.Controls.Add(this.ButtonExport);
+            this.Controls.Add(this.PanelProperties);
+            this.Controls.Add(this.ButtonLoadMap);
             this.Controls.Add(this.ListBoxMaps);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.vScrollBar1);
-            this.Controls.Add(this.hScrollBar1);
+            this.Controls.Add(this.PanelMetadataDisplay);
+            this.Controls.Add(this.VScrollBarMetadataDisplay);
+            this.Controls.Add(this.HScrollBarMetadataDisplay);
             this.MaximumSize = new System.Drawing.Size(928, 602);
             this.MinimumSize = new System.Drawing.Size(928, 602);
             this.Name = "MetadataEditor";
-            this.Text = "Editor de metadados";
+            this.Text = "Metadata Editor";
             this.Load += new System.EventHandler(this.MapEditor_Load);
-            this.panel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.PanelMetadataDisplay.ResumeLayout(false);
+            this.PanelProperties.ResumeLayout(false);
+            this.PanelProperties.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private CustomControls.MetadataDisplay _metadataDisplay;
-        private System.Windows.Forms.HScrollBar hScrollBar1;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.Panel panel2;
+        private CustomControls.MetadataDisplay MetadataDisplay;
+        private System.Windows.Forms.HScrollBar HScrollBarMetadataDisplay;
+        private System.Windows.Forms.VScrollBar VScrollBarMetadataDisplay;
+        private System.Windows.Forms.Panel PanelMetadataDisplay;
         private System.Windows.Forms.ListBox ListBoxMaps;
-        private System.Windows.Forms.Button btnLoadMap;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox TxtHeight;
-        private System.Windows.Forms.TextBox TxtWidth;
-        private System.Windows.Forms.TextBox TxtY;
-        private System.Windows.Forms.TextBox TxtX;
-        private System.Windows.Forms.Button BtnExcluir;
-        private System.Windows.Forms.Button BtnExportar;
-        private System.Windows.Forms.Button BtnInportar;
-        private System.Windows.Forms.TextBox TxtName;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button ButtonLoadMap;
+        private System.Windows.Forms.Panel PanelProperties;
+        private System.Windows.Forms.TextBox TextHeight;
+        private System.Windows.Forms.TextBox TextWidth;
+        private System.Windows.Forms.TextBox TextY;
+        private System.Windows.Forms.TextBox TextX;
+        private System.Windows.Forms.Button ButtonRemove;
+        private System.Windows.Forms.Button ButtonExport;
+        private System.Windows.Forms.Button ButtonImport;
+        private System.Windows.Forms.TextBox TextName;
+        private System.Windows.Forms.Label LabelX;
+        private System.Windows.Forms.Label LabelName;
+        private System.Windows.Forms.Label LabelWidth;
+        private System.Windows.Forms.Label LabelY;
+        private System.Windows.Forms.Label LabelHeight;
     }
 }

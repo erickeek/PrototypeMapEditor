@@ -81,10 +81,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Camada.cs" />
-    <Compile Include="Core\Mapa.cs" />
-    <Compile Include="Core\MetadadoMapa.cs" />
-    <Compile Include="Core\ObjetoDoMapa.cs" />
+    <Compile Include="Core\Layer.cs" />
+    <Compile Include="Core\Map.cs" />
+    <Compile Include="Core\MetadataMap.cs" />
+    <Compile Include="Core\ObjectMap.cs" />
     <Compile Include="CustomControls\MapDisplay.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -93,6 +93,12 @@
     </Compile>
     <Compile Include="CustomControls\ObjectDisplay.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorForm\LayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorForm\LayerForm.Designer.cs">
+      <DependentUpon>LayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorForm\Main.cs">
       <SubType>Form</SubType>
@@ -112,12 +118,15 @@
     <Compile Include="EditorForm\MetadataEditor.Designer.cs">
       <DependentUpon>MetadataEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\IntHelper.cs" />
+    <Compile Include="Helper\ObjectHelper.cs" />
     <Compile Include="Helper\RectangleHelper.cs" />
-    <Compile Include="IO\AcaoCarregarMetdadosDoMapa.cs" />
-    <Compile Include="IO\AcessaConteudo.cs" />
-    <Compile Include="IO\AcessaMapa.cs" />
-    <Compile Include="IO\AcaoSalvarMetadadosDoMapa.cs" />
+    <Compile Include="Helper\Texture2DHelper.cs" />
+    <Compile Include="IO\ActionLoadMetadataMap.cs" />
+    <Compile Include="IO\AccessContent.cs" />
+    <Compile Include="IO\AccessMap.cs" />
+    <Compile Include="IO\ActionSaveMetadataMap.cs" />
     <Compile Include="IO\RectangleConverter.cs" />
     <Compile Include="IO\Serializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -164,6 +173,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EditorForm\LayerForm.resx">
+      <DependentUpon>LayerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditorForm\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

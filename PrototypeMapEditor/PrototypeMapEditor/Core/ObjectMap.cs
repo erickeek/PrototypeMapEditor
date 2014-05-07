@@ -6,14 +6,16 @@ using PrototypeMapEditor.IO;
 namespace PrototypeMapEditor.Core
 {
     [Serializable]
-    public class ObjetoDoMapa
+    public class ObjectMap
     {
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [JsonConverter(typeof(RectangleConverter))]
-        public Rectangle Fonte;
+        public Rectangle Source;
 
         [JsonIgnore]
-        public bool Selecionado { get; set; }
+        public bool Selected { get; set; }
+
+        public Vector2 Position { get; set; }
     }
 }

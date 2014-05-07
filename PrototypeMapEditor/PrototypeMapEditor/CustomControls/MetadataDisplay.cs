@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,8 +22,8 @@ namespace PrototypeMapEditor.CustomControls
             set { _texture = value; }
         }
 
-        public List<ObjetoDoMapa> ObjetosDoMapa { get; set; }
-        public ObjetoDoMapa ObjetosDoMapaAtual { get; set; }
+        public List<ObjectMap> ObjectsInMap { get; set; }
+        public ObjectMap ActualObjectMap { get; set; }
 
         public Vector2 Position;
 
@@ -34,7 +35,7 @@ namespace PrototypeMapEditor.CustomControls
             _nullTexture = _content.Load<Texture2D>("1x1");
 
             Position = Vector2.Zero;
-            ObjetosDoMapa = new List<ObjetoDoMapa>();
+            ObjectsInMap = new List<ObjectMap>();
         }
 
         protected override void Draw()
@@ -45,22 +46,37 @@ namespace PrototypeMapEditor.CustomControls
                 return;
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_texture, Position, Color.White);
 
-            if (ObjetosDoMapa.Count > 0)
-            {
-                foreach (var objetoDoMapa in ObjetosDoMapa)
-                {
-                    _spriteBatch.DrawRectangle(_nullTexture, objetoDoMapa.Fonte.Add(Position), objetoDoMapa.Selecionado ? Color.Yellow : Color.Black, 1);
-                }
-            }
-
-            if (ObjetosDoMapaAtual != null)
-            {
-                _spriteBatch.DrawRectangle(_nullTexture, ObjetosDoMapaAtual.Fonte.Add(Position), Color.Red, 1);
-            }
+            DrawBackground();
+            DrawObjectsInMap();
+            DrawActualObjectMap();
 
             _spriteBatch.End();
+        }
+
+        private void DrawBackground()
+        {
+            _spriteBatch.Draw(_texture, Position, Color.White);
+        }
+
+        private void DrawObjectsInMap()
+        {
+            if (!ObjectsInMap.Any())
+                return;
+
+            foreach (var objectMap in ObjectsInMap)
+            {
+                var color = objectMap.Selected ? Color.Yellow : Color.Black;
+                _spriteBatch.DrawRectangle(_nullTexture, objectMap.Source.Add(Position), color, 1);
+            }
+        }
+
+        private void DrawActualObjectMap()
+        {
+            if (ActualObjectMap == null)
+                return;
+
+            _spriteBatch.DrawRectangle(_nullTexture, ActualObjectMap.Source.Add(Position), Color.Red, 1);
         }
 
         public void LoadContent(string fileName)
