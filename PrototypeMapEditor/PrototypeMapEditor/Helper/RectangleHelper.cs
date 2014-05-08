@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PrototypeMapEditor.Core;
 
 namespace PrototypeMapEditor.Helper
 {
@@ -32,6 +33,18 @@ namespace PrototypeMapEditor.Helper
                 (int)(fonte.Y + position.Y),
                 fonte.Width,
                 fonte.Height);
+        }
+
+        public static Rectangle Scaling(this ObjectMap objectMap, float scale)
+        {
+            var source = new Rectangle
+            {
+                Width = (int)(objectMap.Source.Width * scale),
+                Height = (int)(objectMap.Source.Height * scale)
+            };
+            source.X = (int)objectMap.Position.X - source.Width / 2;
+            source.Y = (int)objectMap.Position.Y - source.Height / 2;
+            return source;
         }
     }
 }

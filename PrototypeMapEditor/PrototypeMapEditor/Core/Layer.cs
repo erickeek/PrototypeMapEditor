@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace PrototypeMapEditor.Core
@@ -21,6 +22,7 @@ namespace PrototypeMapEditor.Core
         public void AddObjectMap(ObjectMap objeto)
         {
             objeto.Position += new Vector2(objeto.Source.Width, objeto.Source.Height) / 2f;
+            objeto.DrawOrder = (ObjectsInMap.Max(c => (int?)c.DrawOrder) ?? 0) + 1;
             ObjectsInMap.Add(objeto);
         }
     }

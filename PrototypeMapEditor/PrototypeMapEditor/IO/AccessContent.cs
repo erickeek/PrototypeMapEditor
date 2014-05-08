@@ -9,7 +9,7 @@ namespace PrototypeMapEditor.IO
 
         protected abstract string GetSpecificFolder();
 
-        protected string FullPath()
+        private string FullPath()
         {
             return Path.Combine(BaseDirectory, GetSpecificFolder());
         }

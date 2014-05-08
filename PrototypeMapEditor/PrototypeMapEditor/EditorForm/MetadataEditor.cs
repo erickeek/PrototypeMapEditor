@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PrototypeMapEditor.Core;
+using PrototypeMapEditor.CustomControls.Dialog;
 using PrototypeMapEditor.IO;
 using Point = System.Drawing.Point;
 using PrototypeMapEditor.Helper;
@@ -29,10 +30,6 @@ namespace PrototypeMapEditor.EditorForm
         public MetadataEditor()
         {
             InitializeComponent();
-            //DoubleBuffered = true;
-            //SetStyle(ControlStyles.ResizeRedraw, true);
-
-            KeyPreview = true;
 
             Application.Idle += delegate { UpdateView(); };
         }
@@ -43,44 +40,33 @@ namespace PrototypeMapEditor.EditorForm
             ListBoxMaps.Items.AddRange(_accessMap.List());
         }
 
-        private ObjectMap GetObjectMap()
-        {
-            return new ObjectMap
-                {
-                    Source = new Rectangle(
-                        Math.Min(_startPosition.X, _currentPosition.X),
-                        Math.Min(_startPosition.Y, _currentPosition.Y),
-                        Math.Abs(_startPosition.X - _currentPosition.X),
-                        Math.Abs(_startPosition.Y - _currentPosition.Y)
-                    )
-                };
-        }
-
         private void MapDisplay_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
+
+            _currentPosition = _startPosition = CurrentPosition(e);
+
+            var mouseSource = new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1);
+
+            var actualObjectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => o.Source.Intersects(mouseSource));
+            if (actualObjectMap == null)
             {
-                MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
+                _isDrawing = true;
+            }
+            else
+            {
+                _isMove = true;
 
-                _currentPosition = _startPosition = CurrentPosition(e);
+                MetadataDisplay.ActualObjectMap = actualObjectMap;
+                MetadataDisplay.ActualObjectMap.Selected = true;
 
-                var actualObjectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => o.Source.Intersects(new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1)));
-                if (actualObjectMap == null)
-                {
-                    _isDrawing = true;
-                }
-                else
-                {
-                    _isMove = true;
-
-                    MetadataDisplay.ActualObjectMap = actualObjectMap;
-                    MetadataDisplay.ActualObjectMap.Selected = true;
-
-                    _offset = _currentPosition - new Size(
-                        MetadataDisplay.ActualObjectMap.Source.X,
-                        MetadataDisplay.ActualObjectMap.Source.Y
-                    );
-                }
+                _offset = _currentPosition - new Size(
+                    MetadataDisplay.ActualObjectMap.Source.X,
+                    MetadataDisplay.ActualObjectMap.Source.Y
+                );
             }
         }
 
@@ -129,11 +115,6 @@ namespace PrototypeMapEditor.EditorForm
             }
         }
 
-        private Point CurrentPosition(MouseEventArgs e)
-        {
-            return new Point((int)(e.Location.X - MetadataDisplay.Position.X), (int)(e.Location.Y - MetadataDisplay.Position.Y));
-        }
-
         private void ButtonLoadMap_Click(object sender, EventArgs e)
         {
             var selectedFile = (string)ListBoxMaps.SelectedItem;
@@ -151,6 +132,62 @@ namespace PrototypeMapEditor.EditorForm
             VScrollBarMetadataDisplay.Maximum = (MetadataDisplay.Texture.Height - MetadataDisplay.Height) / ScrollScale;
         }
 
+        private void ButtonRemove_Click(object sender, EventArgs e)
+        {
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
+            if (objectMap != null)
+            {
+                MetadataDisplay.ObjectsInMap.Remove(objectMap);
+                MetadataDisplay.ActualObjectMap = null;
+            }
+        }
+
+        private void ButtonExport_Click(object sender, EventArgs e)
+        {
+            var selectedFile = (string)ListBoxMaps.SelectedItem;
+
+            if (selectedFile == null)
+                return;
+
+            var fileName = _accessMap.GetFullPath(selectedFile);
+            if (!File.Exists(fileName))
+                return;
+
+            if (!MetadataDisplay.ObjectsInMap.Any())
+            {
+                MessageBox.Show("Create objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var objetoDoMapa = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Name));
+            if (objetoDoMapa != null)
+            {
+                MessageBox.Show("Name all the objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
+                objetoDoMapa.Selected = true;
+                MetadataDisplay.ActualObjectMap = objetoDoMapa;
+                UpdateView();
+                return;
+            }
+
+            new ExportMetadataMapDialog(MetadataDisplay.ObjectsInMap, selectedFile).ShowDialog();
+        }
+
+        private void ButtonImport_Click(object sender, EventArgs e)
+        {
+            var importMetadataMapDialog = new ImportMetadataMapDialog();
+            if (importMetadataMapDialog.ShowDialog() == DialogResult.OK)
+            {
+                var metadadoMapa = importMetadataMapDialog.ActionLoadMetadataMap.MetadataMap;
+
+                ListBoxMaps.SelectedItem = metadadoMapa.FileName;
+                ButtonLoadMap_Click(null, e);
+
+                MetadataDisplay.ObjectsInMap = metadadoMapa.ObjectsInMap.ToList();
+                UpdateView();
+            }
+        }
+
         private void HScrollBarMetadataEditor_Scroll(object sender, ScrollEventArgs e)
         {
             UpdateScroll();
@@ -161,36 +198,9 @@ namespace PrototypeMapEditor.EditorForm
             UpdateScroll();
         }
 
-        private void UpdateScroll()
-        {
-            MetadataDisplay.Position.X = -HScrollBarMetadataDisplay.Value * ScrollScale;
-            MetadataDisplay.Position.Y = -VScrollBarMetadataDisplay.Value * ScrollScale;
-            UpdateView();
-        }
-
         private void ListBoxMaps_DoubleClick(object sender, EventArgs e)
         {
             ButtonLoadMap_Click(null, e);
-        }
-
-        private void UpdateView()
-        {
-            MetadataDisplay.Invalidate();
-
-            if (MetadataDisplay.ActualObjectMap != null)
-            {
-                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = true;
-
-                TextX.Text = MetadataDisplay.ActualObjectMap.Source.X.ToString(CultureInfo.InvariantCulture);
-                TextY.Text = MetadataDisplay.ActualObjectMap.Source.Y.ToString(CultureInfo.InvariantCulture);
-                TextWidth.Text = MetadataDisplay.ActualObjectMap.Source.Width.ToString(CultureInfo.InvariantCulture);
-                TextHeight.Text = MetadataDisplay.ActualObjectMap.Source.Height.ToString(CultureInfo.InvariantCulture);
-                TextName.Text = MetadataDisplay.ActualObjectMap.Name;
-            }
-            else if (MetadataDisplay.ObjectsInMap.All(c => !c.Selected))
-            {
-                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = false;
-            }
         }
 
         private void TextX_TextChanged(object sender, EventArgs e)
@@ -245,88 +255,49 @@ namespace PrototypeMapEditor.EditorForm
             }
         }
 
-        private void ButtonRemove_Click(object sender, EventArgs e)
+        private void UpdateView()
         {
-            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(c => c.Selected);
-            if (objectMap != null)
+            MetadataDisplay.Invalidate();
+
+            if (MetadataDisplay.ActualObjectMap != null)
             {
-                MetadataDisplay.ObjectsInMap.Remove(objectMap);
-                MetadataDisplay.ActualObjectMap = null;
+                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = true;
+
+                TextX.Text = MetadataDisplay.ActualObjectMap.Source.X.ToString(CultureInfo.InvariantCulture);
+                TextY.Text = MetadataDisplay.ActualObjectMap.Source.Y.ToString(CultureInfo.InvariantCulture);
+                TextWidth.Text = MetadataDisplay.ActualObjectMap.Source.Width.ToString(CultureInfo.InvariantCulture);
+                TextHeight.Text = MetadataDisplay.ActualObjectMap.Source.Height.ToString(CultureInfo.InvariantCulture);
+                TextName.Text = MetadataDisplay.ActualObjectMap.Name;
+            }
+            else if (MetadataDisplay.ObjectsInMap.All(c => !c.Selected))
+            {
+                ButtonRemove.Enabled = TextName.Enabled = TextX.Enabled = TextY.Enabled = TextWidth.Enabled = TextHeight.Enabled = false;
             }
         }
 
-        private void ButtonExport_Click(object sender, EventArgs e)
+        private void UpdateScroll()
         {
-            var selectedFile = (string)ListBoxMaps.SelectedItem;
-
-            if (selectedFile == null)
-                return;
-
-            var fileName = _accessMap.GetFullPath(selectedFile);
-            if (!File.Exists(fileName))
-                return;
-
-            if (!MetadataDisplay.ObjectsInMap.Any())
-            {
-                MessageBox.Show("Create objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var objetoDoMapa = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Name));
-            if (objetoDoMapa != null)
-            {
-                MessageBox.Show("Name all the objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
-                objetoDoMapa.Selected = true;
-                MetadataDisplay.ActualObjectMap = objetoDoMapa;
-                UpdateView();
-                return;
-            }
-
-            var dialog = new SaveFileDialog
-                {
-                    AutoUpgradeEnabled = true,
-                    AddExtension = true,
-                    Title = "Export metadata map",
-                    DefaultExt = "bmm",
-                    Filter = "Bantu Metadata Map (*.bmm)|*.bmm",
-                    FileName = "Untitled"
-                };
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                var action = new ActionSaveMetadataMap(new MetadataMap
-                    {
-                        ObjectsInMap = MetadataDisplay.ObjectsInMap,
-                        FileName = selectedFile
-                    }, dialog.FileName);
-                action.Executar();
-            }
+            MetadataDisplay.Position.X = -HScrollBarMetadataDisplay.Value * ScrollScale;
+            MetadataDisplay.Position.Y = -VScrollBarMetadataDisplay.Value * ScrollScale;
+            UpdateView();
         }
 
-        private void ButtonImport_Click(object sender, EventArgs e)
+        private ObjectMap GetObjectMap()
         {
-            var dialog = new OpenFileDialog
-                {
-                    AutoUpgradeEnabled = true,
-                    AddExtension = true,
-                    Title = "Import metadata map",
-                    DefaultExt = "bmm",
-                    Filter = "Bantu Metadata Map (*.bmm)|*.bmm",
-                };
-            if (dialog.ShowDialog() == DialogResult.OK)
+            return new ObjectMap
             {
-                var acaoCarregarMetdadosDoMapa = new ActionLoadMetadataMap(dialog.FileName);
-                acaoCarregarMetdadosDoMapa.Executar();
+                Source = new Rectangle(
+                    Math.Min(_startPosition.X, _currentPosition.X),
+                    Math.Min(_startPosition.Y, _currentPosition.Y),
+                    Math.Abs(_startPosition.X - _currentPosition.X),
+                    Math.Abs(_startPosition.Y - _currentPosition.Y)
+                )
+            };
+        }
 
-                var metadadoMapa = acaoCarregarMetdadosDoMapa.MetadataMap;
-
-                ListBoxMaps.SelectedItem = metadadoMapa.FileName;
-                ButtonLoadMap_Click(null, e);
-
-                MetadataDisplay.ObjectsInMap = metadadoMapa.ObjectsInMap.ToList();
-                UpdateView();
-            }
+        private Point CurrentPosition(MouseEventArgs e)
+        {
+            return new Point((int)(e.Location.X - MetadataDisplay.Position.X), (int)(e.Location.Y - MetadataDisplay.Position.Y));
         }
     }
 }

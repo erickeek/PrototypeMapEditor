@@ -13,14 +13,15 @@ Funcionalidades em desenvolvimento
 * Editor de mapa utilizando os metadados
 
 Próximas funcionalidades para o editor de mapa
-* Corrigir posicionamento dentro do componente MapDisplay
-* Corrigir cultura no cadastro de camadas quando número
-* Criar extension para conversão que suporte valor padrão
+* Corrigir posicionamento dentro do componente MapDisplay - OK
+* Corrigir cultura no cadastro de camadas quando número - OK
+* Criar extension para conversão que suporte valor padrão - OK
 * Utilizar porcentagem do formulário para fazer zoom no MapDisplay
 * Criar opção para definir tamanho do MapDisplay
 * Criar opção para fazer a grid
 * Criar opção para fazer o ledge
 * Implementar um PictureBox para "transportar" a imagem do ObjectDisplay para MapDisplay visualmente
+* Bug: Ao entrar no editor de metadados e depois entrar no editor de mapa o ObjectDisplay muda
 
 Funcionalidades Futuras
 * Editor metadados para personagens

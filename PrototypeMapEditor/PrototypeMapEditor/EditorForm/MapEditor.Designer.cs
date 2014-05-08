@@ -1,4 +1,6 @@
-﻿namespace PrototypeMapEditor.EditorForm
+﻿using PrototypeMapEditor.CustomControls.ListBox;
+
+namespace PrototypeMapEditor.EditorForm
 {
     partial class MapEditor
     {
@@ -35,9 +37,9 @@
             this.ButtonImportMetadata = new System.Windows.Forms.Button();
             this.GroupBoxLayer = new System.Windows.Forms.GroupBox();
             this.ButtonAddLayer = new System.Windows.Forms.Button();
-            this.ListBoxLayer = new System.Windows.Forms.ListBox();
             this.GroupBoxObject = new System.Windows.Forms.GroupBox();
-            this.ListBoxObject = new System.Windows.Forms.ListBox();
+            this.ListBoxObject = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
+            this.ListBoxLayer = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ObjectDisplay = new PrototypeMapEditor.CustomControls.ObjectDisplay();
             this.MapDisplay = new PrototypeMapEditor.CustomControls.MapDisplay();
             this.GroupBoxLayer.SuspendLayout();
@@ -50,6 +52,7 @@
             this.HScrollBarMapDisplay.Name = "HScrollBarMapDisplay";
             this.HScrollBarMapDisplay.Size = new System.Drawing.Size(679, 18);
             this.HScrollBarMapDisplay.TabIndex = 2;
+            this.HScrollBarMapDisplay.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBarMapDisplay_Scroll);
             // 
             // VScrollBarMapDisplay
             // 
@@ -57,6 +60,7 @@
             this.VScrollBarMapDisplay.Name = "VScrollBarMapDisplay";
             this.VScrollBarMapDisplay.Size = new System.Drawing.Size(17, 485);
             this.VScrollBarMapDisplay.TabIndex = 3;
+            this.VScrollBarMapDisplay.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScrollBarMapDisplay_Scroll);
             // 
             // VScrollBarObjectDisplay
             // 
@@ -105,19 +109,6 @@
             this.ButtonAddLayer.UseVisualStyleBackColor = true;
             this.ButtonAddLayer.Click += new System.EventHandler(this.ButtonAddLayer_Click);
             // 
-            // ListBoxLayer
-            // 
-            this.ListBoxLayer.DisplayMember = "Name";
-            this.ListBoxLayer.FormattingEnabled = true;
-            this.ListBoxLayer.Location = new System.Drawing.Point(7, 20);
-            this.ListBoxLayer.Name = "ListBoxLayer";
-            this.ListBoxLayer.Size = new System.Drawing.Size(171, 95);
-            this.ListBoxLayer.TabIndex = 0;
-            this.ListBoxLayer.ValueMember = "Name";
-            this.ListBoxLayer.SelectedValueChanged += new System.EventHandler(this.ListBoxLayer_SelectedValueChanged);
-            this.ListBoxLayer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxLayer_KeyUp);
-            this.ListBoxLayer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBoxLayer_MouseDoubleClick);
-            // 
             // GroupBoxObject
             // 
             this.GroupBoxObject.Controls.Add(this.ListBoxObject);
@@ -130,6 +121,7 @@
             // 
             // ListBoxObject
             // 
+            this.ListBoxObject.AllowDrop = true;
             this.ListBoxObject.DisplayMember = "Name";
             this.ListBoxObject.FormattingEnabled = true;
             this.ListBoxObject.Location = new System.Drawing.Point(7, 20);
@@ -137,7 +129,23 @@
             this.ListBoxObject.Size = new System.Drawing.Size(171, 186);
             this.ListBoxObject.TabIndex = 0;
             this.ListBoxObject.ValueMember = "Name";
+            this.ListBoxObject.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxObject_DragDrop);
             this.ListBoxObject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxObject_KeyUp);
+            // 
+            // ListBoxLayer
+            // 
+            this.ListBoxLayer.AllowDrop = true;
+            this.ListBoxLayer.DisplayMember = "Name";
+            this.ListBoxLayer.FormattingEnabled = true;
+            this.ListBoxLayer.Location = new System.Drawing.Point(7, 20);
+            this.ListBoxLayer.Name = "ListBoxLayer";
+            this.ListBoxLayer.Size = new System.Drawing.Size(171, 95);
+            this.ListBoxLayer.TabIndex = 0;
+            this.ListBoxLayer.ValueMember = "Name";
+            this.ListBoxLayer.SelectedValueChanged += new System.EventHandler(this.ListBoxLayer_SelectedValueChanged);
+            this.ListBoxLayer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxLayer_DragDrop);
+            this.ListBoxLayer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxLayer_KeyUp);
+            this.ListBoxLayer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBoxLayer_MouseDoubleClick);
             // 
             // ObjectDisplay
             // 
@@ -149,6 +157,8 @@
             this.ObjectDisplay.Text = "ObjectDisplay";
             this.ObjectDisplay.Texture = null;
             this.ObjectDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ObjectDisplay_MouseDown);
+            this.ObjectDisplay.MouseLeave += new System.EventHandler(this.ObjectDisplay_MouseLeave);
+            this.ObjectDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ObjectDisplay_MouseMove);
             // 
             // MapDisplay
             // 
@@ -162,6 +172,7 @@
             this.MapDisplay.Text = "mapDisplay1";
             this.MapDisplay.Texture = null;
             this.MapDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
+            this.MapDisplay.MouseLeave += new System.EventHandler(this.MapDisplay_MouseLeave);
             this.MapDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
             this.MapDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
             // 
@@ -200,8 +211,8 @@
         private System.Windows.Forms.Button ButtonImportMetadata;
         private System.Windows.Forms.GroupBox GroupBoxLayer;
         private System.Windows.Forms.Button ButtonAddLayer;
-        private System.Windows.Forms.ListBox ListBoxLayer;
+        private CustomControls.ListBox.DragDropListBox ListBoxLayer;
         private System.Windows.Forms.GroupBox GroupBoxObject;
-        private System.Windows.Forms.ListBox ListBoxObject;
+        private CustomControls.ListBox.DragDropListBox ListBoxObject;
     }
 }

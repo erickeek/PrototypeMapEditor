@@ -17,5 +17,7 @@ namespace PrototypeMapEditor.Core
         public bool Selected { get; set; }
 
         public Vector2 Position { get; set; }
+
+        public int DrawOrder { get; set; }
     }
 }

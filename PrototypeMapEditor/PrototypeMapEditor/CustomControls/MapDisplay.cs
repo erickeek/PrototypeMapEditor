@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PrototypeMapEditor.Core;
@@ -39,12 +40,15 @@ namespace PrototypeMapEditor.CustomControls
 
             _spriteBatch.Begin();
 
-            foreach (var layer in Map.Layers)
+            foreach (var layer in Map.Layers.OrderBy(l => l.Index))
             {
-                foreach (var objectMap in layer.ObjectsInMap)
+                var scale = layer.Scale;
+                foreach (var objectMap in layer.ObjectsInMap.OrderBy(o => o.DrawOrder))
                 {
                     var origin = new Vector2(objectMap.Source.Width, objectMap.Source.Height) / 2f;
-                    _spriteBatch.Draw(Texture, objectMap.Position, objectMap.Source, layer.Color, 0f, origin, layer.Scale, SpriteEffects.None, 1f);
+                    _spriteBatch.Draw(Texture, objectMap.Position + Position, objectMap.Source, layer.Color, 0f, origin, scale, SpriteEffects.None, 1f);
+
+                    //_spriteBatch.Draw(_nullTexture, objectMap.Scaling(scale), new Color(255, 0, 0, 5));
                 }
             }
 

@@ -3,13 +3,13 @@ using PrototypeMapEditor.Core.Culture;
 
 namespace PrototypeMapEditor.Helper
 {
-    public static class IntHelper
+    public static class FloatHelper
     {
-        public static int ToInt32(this object value, int defaultValue = 0)
+        public static float ToSingle(this object value, float defaultValue = 0)
         {
             try
             {
-                return Convert.ToInt32(value, CultureFacade.Culture);
+                return Convert.ToSingle(value, CultureFacade.Culture);
             }
             catch
             {

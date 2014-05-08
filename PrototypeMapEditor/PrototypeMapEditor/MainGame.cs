@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PrototypeMapEditor
 {
-    public class Game1 : Game
+    public class MainGame : Game
     {
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
-        public Game1()
+        public MainGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
