@@ -20,6 +20,8 @@ namespace PrototypeMapEditor.CustomControls
         public MetadataMap MetadataMap { get; set; }
 
         public ObjectMap ActualObjectMap { get; set; }
+        public ObjectMap StampObjectMap { get; set; }
+        public Layer ActualLayer { get; set; }
 
         protected override void Initialize()
         {
@@ -52,12 +54,19 @@ namespace PrototypeMapEditor.CustomControls
                 }
             }
 
+            if (StampObjectMap != null)
+            {
+                var origin = new Vector2(StampObjectMap.Source.Width, StampObjectMap.Source.Height) / 2f;
+                _spriteBatch.Draw(Texture, StampObjectMap.Position + Position, StampObjectMap.Source, new Color(255, 255, 255, 25), 0f, origin, ActualLayer.Scale, SpriteEffects.None, 1f);
+            }
+
             _spriteBatch.End();
         }
 
         public void LoadContent(string fileName)
         {
             Texture = _content.Load<Texture2D>(fileName);
+            Map.FileName = fileName;
         }
     }
 }

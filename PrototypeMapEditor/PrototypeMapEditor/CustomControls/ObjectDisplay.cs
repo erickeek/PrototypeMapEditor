@@ -53,15 +53,15 @@ namespace PrototypeMapEditor.CustomControls
             var scale = Scale();
             var positionY = Position.Y;
 
-            foreach (var objeto in MetadataMap.ObjectsInMap)
+            foreach (var objectMap in MetadataMap.ObjectsInMap)
             {
-                var origin = new Vector2(objeto.Source.Width / 2f, 0);
+                var origin = new Vector2(objectMap.Source.Width / 2f, 0);
                 var position = new Vector2(_viewportMiddle, positionY);
 
-                //_spriteBatch.Draw(_nullTexture, position, objeto.Source, Color.White, 0f, origin, scale, SpriteEffects.None, 1f);
-                _spriteBatch.Draw(Texture, position, objeto.Source, Color.White, 0f, origin, scale, SpriteEffects.None, 1f);
+                //_spriteBatch.Draw(_nullTexture, position, objectMap.Source, Color.White, 0f, origin, scale, SpriteEffects.None, 1f);
+                _spriteBatch.Draw(Texture, position, objectMap.Source, Color.White, 0f, origin, scale, SpriteEffects.None, 1f);
 
-                positionY = position.Y + objeto.Source.Height * scale + MarginBetweenObjects;
+                positionY = position.Y + objectMap.Source.Height * scale + MarginBetweenObjects;
             }
         }
 
@@ -80,19 +80,19 @@ namespace PrototypeMapEditor.CustomControls
 
             var positionY = Position.Y;
 
-            foreach (var objeto in MetadataMap.ObjectsInMap)
+            foreach (var objectMap in MetadataMap.ObjectsInMap)
             {
                 var position = new Vector2(0, positionY);
 
-                var sourceRectangle = new Rectangle(0, (int)positionY, (int)(maxWidth * scale), (int)(objeto.Source.Height * scale));
+                var sourceRectangle = new Rectangle(0, (int)positionY, (int)(maxWidth * scale), (int)(objectMap.Source.Height * scale));
                 //_spriteBatch.Draw(_nullTexture, position, sourceRectangle, new Color(255, 0, 0, 20));
 
                 if (sourceRectangle.Contains(x, y))
                 {
-                    return objeto;
+                    return objectMap;
                 }
 
-                positionY = position.Y + objeto.Source.Height * scale + MarginBetweenObjects;
+                positionY = position.Y + objectMap.Source.Height * scale + MarginBetweenObjects;
             }
             return null;
         }

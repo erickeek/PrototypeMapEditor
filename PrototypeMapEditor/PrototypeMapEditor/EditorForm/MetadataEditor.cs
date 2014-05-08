@@ -122,7 +122,7 @@ namespace PrototypeMapEditor.EditorForm
             if (selectedFile == null)
                 return;
 
-            var fileName = _accessMap.GetFullPath(selectedFile);
+            var fileName = _accessMap.GetBinaryFullPath(selectedFile);
             if (!File.Exists(fileName))
                 return;
 
@@ -149,7 +149,7 @@ namespace PrototypeMapEditor.EditorForm
             if (selectedFile == null)
                 return;
 
-            var fileName = _accessMap.GetFullPath(selectedFile);
+            var fileName = _accessMap.GetBinaryFullPath(selectedFile);
             if (!File.Exists(fileName))
                 return;
 
@@ -159,13 +159,13 @@ namespace PrototypeMapEditor.EditorForm
                 return;
             }
 
-            var objetoDoMapa = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Name));
-            if (objetoDoMapa != null)
+            var objectMap = MetadataDisplay.ObjectsInMap.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.Name));
+            if (objectMap != null)
             {
                 MessageBox.Show("Name all the objects before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 MetadataDisplay.ObjectsInMap.ForEach(c => c.Selected = false);
-                objetoDoMapa.Selected = true;
-                MetadataDisplay.ActualObjectMap = objetoDoMapa;
+                objectMap.Selected = true;
+                MetadataDisplay.ActualObjectMap = objectMap;
                 UpdateView();
                 return;
             }

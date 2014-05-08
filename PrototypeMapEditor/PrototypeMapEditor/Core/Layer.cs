@@ -19,11 +19,12 @@ namespace PrototypeMapEditor.Core
             ObjectsInMap = new List<ObjectMap>();
         }
 
-        public void AddObjectMap(ObjectMap objeto)
+        public void AddObjectMap(ObjectMap objectMap, Vector2 position)
         {
-            objeto.Position += new Vector2(objeto.Source.Width, objeto.Source.Height) / 2f;
-            objeto.DrawOrder = (ObjectsInMap.Max(c => (int?)c.DrawOrder) ?? 0) + 1;
-            ObjectsInMap.Add(objeto);
+            objectMap.Position = new Vector2(objectMap.Source.Width, objectMap.Source.Height) / 2 - position;
+
+            objectMap.DrawOrder = (ObjectsInMap.Max(c => (int?)c.DrawOrder) ?? 0) + 1;
+            ObjectsInMap.Add(objectMap);
         }
     }
 }

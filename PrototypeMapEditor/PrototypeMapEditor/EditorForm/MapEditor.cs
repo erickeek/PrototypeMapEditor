@@ -21,10 +21,14 @@ namespace PrototypeMapEditor.EditorForm
         private Point _offset;
         private Point _currentPosition;
         private bool _isMove;
+        private bool _controlIsPressed;
+        private ObjectMap _lastObjectMap;
 
         public MapEditor()
         {
             InitializeComponent();
+
+            KeyPreview = true;
 
             Application.Idle += delegate { UpdateView(); };
         }
@@ -34,25 +38,23 @@ namespace PrototypeMapEditor.EditorForm
             _accessMap = new AccessMap();
         }
 
+        private void MapEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            _controlIsPressed = (ModifierKeys & Keys.Control) == Keys.Control;
+        }
+
+        private void MapEditor_KeyUp(object sender, KeyEventArgs e)
+        {
+            _controlIsPressed = false;
+        }
+
         private void ButtonImportMetadata_Click(object sender, EventArgs e)
         {
             var importMetadataMapDialog = new ImportMetadataMapDialog();
             if (importMetadataMapDialog.ShowDialog() == DialogResult.OK)
             {
                 var actionLoadMetadataMap = importMetadataMapDialog.ActionLoadMetadataMap;
-
-                ObjectDisplay.MetadataMap = actionLoadMetadataMap.MetadataMap;
-                MapDisplay.MetadataMap = actionLoadMetadataMap.MetadataMap;
-
-                var nomeDoArquivo = ObjectDisplay.MetadataMap.FileName;
-                if (!File.Exists(_accessMap.GetFullPath(nomeDoArquivo)))
-                    return;
-
-                var name = _accessMap.GetSpecifcFolderWithoutExtension(nomeDoArquivo);
-                ObjectDisplay.LoadContent(name);
-                VScrollBarObjectDisplay.Maximum = (int)((ObjectDisplay.TotalHeight - ObjectDisplay.Height) / ScrollScale);
-
-                MapDisplay.LoadContent(name);
+                LoadMetadataMap(actionLoadMetadataMap.MetadataMap);
             }
         }
 
@@ -69,29 +71,49 @@ namespace PrototypeMapEditor.EditorForm
             UpdateListBoxLayer();
         }
 
+        private void ButtonExport_Click(object sender, EventArgs e)
+        {
+            if (!MapDisplay.Map.Layers.Any())
+            {
+                MessageBox.Show("Create layers before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!MapDisplay.Map.Layers.Any(l => l.ObjectsInMap.Any()))
+            {
+                MessageBox.Show("Add objects on the layer before exporting!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            new ExportMapDialog(MapDisplay.Map).ShowDialog();
+        }
+
+        private void ButtonImport_Click(object sender, EventArgs e)
+        {
+            var importMapDialog = new ImportMapDialog();
+            if (importMapDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var map = importMapDialog.ActionLoadMap.Map;
+            LoadMap(map);
+        }
+
         private void ObjectDisplay_MouseDown(object sender, MouseEventArgs e)
         {
-            var objetoDoMapa = ObjectDisplay.SelectObject(e.X, e.Y);
-            if (objetoDoMapa == null)
+            var objectMap = ObjectDisplay.SelectObject(e.X, e.Y);
+            if (objectMap == null)
                 return;
 
             var layer = GetSelectedLayer();
             if (!LayerIsSelected(layer))
                 return;
 
-            layer.AddObjectMap(objetoDoMapa.Clone());
-            UpdateListBoxObject(layer);
-        }
-
-        private void ObjectDisplay_MouseMove(object sender, MouseEventArgs e)
-        {
-            var objectMap = ObjectDisplay.SelectObject(e.X, e.Y);
-            Cursor = objectMap != null ? Cursors.Hand : Cursors.Default;
-        }
-
-        private void ObjectDisplay_MouseLeave(object sender, EventArgs e)
-        {
-            Cursor = Cursors.Default;
+            _lastObjectMap = objectMap;
+            if (!_controlIsPressed)
+            {
+                layer.AddObjectMap(objectMap.Clone(), MapDisplay.Position);
+                UpdateListBoxObject(layer);
+            }
         }
 
         private void VScrollBarObjectDisplay_Scroll(object sender, ScrollEventArgs e)
@@ -101,23 +123,28 @@ namespace PrototypeMapEditor.EditorForm
 
         private void MapDisplay_MouseMove(object sender, MouseEventArgs e)
         {
-            var layer = GetSelectedLayer();
-            if (LayerIsSelected(layer))
-            {
-                var scale = layer.Scale;
-                var mouseSource = new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1);
+            var position = new Vector2(_currentPosition.X - _offset.X, _currentPosition.Y - _offset.Y);
+            _currentPosition = CurrentPosition(e);
 
-                Cursor = layer.ObjectsInMap
-                    .OrderByDescending(o => o.DrawOrder)
-                    .Any(o => o.Scaling(scale)
-                    .Intersects(mouseSource)) ? Cursors.Hand : Cursors.Default;
+            if (_controlIsPressed)
+            {
+                if (_lastObjectMap != null && MapDisplay.StampObjectMap == null)
+                    MapDisplay.StampObjectMap = _lastObjectMap.Clone();
+            }
+            else
+            {
+                MapDisplay.StampObjectMap = null;
             }
 
-            if (!_isMove)
-                return;
+            if (MapDisplay.StampObjectMap != null)
+            {
+                MapDisplay.StampObjectMap.Position = position;
+            }
 
-            _currentPosition = CurrentPosition(e);
-            MapDisplay.ActualObjectMap.Position = new Vector2(_currentPosition.X - _offset.X, _currentPosition.Y - _offset.Y);
+            if (_isMove)
+            {
+                MapDisplay.ActualObjectMap.Position = position;
+            }
 
             UpdateView();
         }
@@ -130,6 +157,17 @@ namespace PrototypeMapEditor.EditorForm
             var layer = GetSelectedLayer();
             if (!LayerIsSelected(layer))
                 return;
+
+            if (_controlIsPressed)
+            {
+                var objectMap = MapDisplay.StampObjectMap.Clone();
+                layer.AddObjectMap(objectMap, MapDisplay.Position);
+                objectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y);
+
+                UpdateListBoxObject(layer);
+                UpdateView();
+                return;
+            }
 
             _currentPosition = CurrentPosition(e);
 
@@ -158,11 +196,6 @@ namespace PrototypeMapEditor.EditorForm
                 _isMove = false;
 
             UpdateView();
-        }
-
-        private void MapDisplay_MouseLeave(object sender, EventArgs e)
-        {
-            Cursor = Cursors.Default;
         }
 
         private void VScrollBarMapDisplay_Scroll(object sender, ScrollEventArgs e)
@@ -226,6 +259,13 @@ namespace PrototypeMapEditor.EditorForm
             UpdateLayerIndex();
         }
 
+        private void ListBoxLayer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var layer = (Layer)ListBoxLayer.SelectedItem;
+            MapDisplay.ActualLayer = layer;
+            UpdateListBoxObject(layer);
+        }
+
         private void ListBoxObject_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Delete)
@@ -250,6 +290,39 @@ namespace PrototypeMapEditor.EditorForm
         private void ListBoxObject_DragDrop(object sender, DragEventArgs e)
         {
             UpdateObjectIndex();
+        }
+
+        private void ListBoxObject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _lastObjectMap = (ObjectMap)ListBoxObject.SelectedItem;
+        }
+
+        private void LoadMetadataMap(MetadataMap metadataMap)
+        {
+            ObjectDisplay.MetadataMap = metadataMap;
+            MapDisplay.MetadataMap = metadataMap;
+
+            var metadataFileName = ObjectDisplay.MetadataMap.FileName;
+            if (!File.Exists(_accessMap.GetBinaryFullPath(metadataFileName)))
+                return;
+
+            var name = _accessMap.GetSpecifcFolderWithoutExtension(metadataFileName);
+            ObjectDisplay.LoadContent(name);
+            VScrollBarObjectDisplay.Maximum = (int)((ObjectDisplay.TotalHeight - ObjectDisplay.Height) / ScrollScale);
+
+            MapDisplay.LoadContent(name);
+            MapDisplay.Map.MetadataFileName = metadataMap.FileName;
+        }
+
+        private void LoadMap(Map map)
+        {
+            var actionLoadMetadataMap =
+                new ActionLoadMetadataMap(_accessMap.GetFullPathWithoutExtension(map.MetadataFileName + ".bmm"));
+            actionLoadMetadataMap.Executar();
+            LoadMetadataMap(actionLoadMetadataMap.MetadataMap);
+
+            MapDisplay.Map = map;
+            UpdateListBoxLayer();
         }
 
         private void UpdateLayerIndex()
@@ -316,7 +389,8 @@ namespace PrototypeMapEditor.EditorForm
 
         private Layer GetSelectedLayer()
         {
-            var layer = MapDisplay.Map.Layers.FirstOrDefault(l => l == ListBoxLayer.SelectedItem);
+            var layer = MapDisplay.ActualLayer;
+            //var layer = MapDisplay.Map.Layers.FirstOrDefault(l => l == ListBoxLayer.SelectedItem);
             if (layer == null && ListBoxLayer.Items.Count == 1)
                 layer = (Layer)(ListBoxLayer.SelectedItem = ListBoxLayer.Items[0]);
 

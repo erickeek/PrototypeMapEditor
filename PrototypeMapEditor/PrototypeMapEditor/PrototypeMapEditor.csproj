@@ -86,7 +86,9 @@
     <Compile Include="Core\Map.cs" />
     <Compile Include="Core\MetadataMap.cs" />
     <Compile Include="Core\ObjectMap.cs" />
+    <Compile Include="CustomControls\Dialog\ExportMapDialog.cs" />
     <Compile Include="CustomControls\Dialog\ExportMetadataMapDialog.cs" />
+    <Compile Include="CustomControls\Dialog\ImportMapDialog.cs" />
     <Compile Include="CustomControls\Dialog\ImportMetadataMapDialog.cs" />
     <Compile Include="CustomControls\ListBox\DragDropListBox.cs">
       <SubType>Component</SubType>
@@ -134,9 +136,11 @@
     <Compile Include="Helper\ObjectHelper.cs" />
     <Compile Include="Helper\RectangleHelper.cs" />
     <Compile Include="Helper\Texture2DHelper.cs" />
+    <Compile Include="IO\ActionLoadMap.cs" />
     <Compile Include="IO\ActionLoadMetadataMap.cs" />
     <Compile Include="IO\AccessContent.cs" />
     <Compile Include="IO\AccessMap.cs" />
+    <Compile Include="IO\ActionSaveMap.cs" />
     <Compile Include="IO\ActionSaveMetadataMap.cs" />
     <Compile Include="IO\RectangleConverter.cs" />
     <Compile Include="IO\Serializer.cs" />

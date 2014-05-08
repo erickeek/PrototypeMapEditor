@@ -38,6 +38,8 @@ namespace PrototypeMapEditor.EditorForm
             this.GroupBoxLayer = new System.Windows.Forms.GroupBox();
             this.ButtonAddLayer = new System.Windows.Forms.Button();
             this.GroupBoxObject = new System.Windows.Forms.GroupBox();
+            this.ButtonExport = new System.Windows.Forms.Button();
+            this.ButtonImport = new System.Windows.Forms.Button();
             this.ListBoxObject = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ListBoxLayer = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ObjectDisplay = new PrototypeMapEditor.CustomControls.ObjectDisplay();
@@ -119,6 +121,26 @@ namespace PrototypeMapEditor.EditorForm
             this.GroupBoxObject.TabStop = false;
             this.GroupBoxObject.Text = "Objects";
             // 
+            // ButtonExport
+            // 
+            this.ButtonExport.Location = new System.Drawing.Point(719, 535);
+            this.ButtonExport.Name = "ButtonExport";
+            this.ButtonExport.Size = new System.Drawing.Size(204, 23);
+            this.ButtonExport.TabIndex = 9;
+            this.ButtonExport.Text = "Export";
+            this.ButtonExport.UseVisualStyleBackColor = true;
+            this.ButtonExport.Click += new System.EventHandler(this.ButtonExport_Click);
+            // 
+            // ButtonImport
+            // 
+            this.ButtonImport.Location = new System.Drawing.Point(719, 564);
+            this.ButtonImport.Name = "ButtonImport";
+            this.ButtonImport.Size = new System.Drawing.Size(204, 23);
+            this.ButtonImport.TabIndex = 10;
+            this.ButtonImport.Text = "Import";
+            this.ButtonImport.UseVisualStyleBackColor = true;
+            this.ButtonImport.Click += new System.EventHandler(this.ButtonImport_Click);
+            // 
             // ListBoxObject
             // 
             this.ListBoxObject.AllowDrop = true;
@@ -129,6 +151,7 @@ namespace PrototypeMapEditor.EditorForm
             this.ListBoxObject.Size = new System.Drawing.Size(171, 186);
             this.ListBoxObject.TabIndex = 0;
             this.ListBoxObject.ValueMember = "Name";
+            this.ListBoxObject.SelectedIndexChanged += new System.EventHandler(this.ListBoxObject_SelectedIndexChanged);
             this.ListBoxObject.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxObject_DragDrop);
             this.ListBoxObject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxObject_KeyUp);
             // 
@@ -142,6 +165,7 @@ namespace PrototypeMapEditor.EditorForm
             this.ListBoxLayer.Size = new System.Drawing.Size(171, 95);
             this.ListBoxLayer.TabIndex = 0;
             this.ListBoxLayer.ValueMember = "Name";
+            this.ListBoxLayer.SelectedIndexChanged += new System.EventHandler(this.ListBoxLayer_SelectedIndexChanged);
             this.ListBoxLayer.SelectedValueChanged += new System.EventHandler(this.ListBoxLayer_SelectedValueChanged);
             this.ListBoxLayer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxLayer_DragDrop);
             this.ListBoxLayer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxLayer_KeyUp);
@@ -157,22 +181,21 @@ namespace PrototypeMapEditor.EditorForm
             this.ObjectDisplay.Text = "ObjectDisplay";
             this.ObjectDisplay.Texture = null;
             this.ObjectDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ObjectDisplay_MouseDown);
-            this.ObjectDisplay.MouseLeave += new System.EventHandler(this.ObjectDisplay_MouseLeave);
-            this.ObjectDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ObjectDisplay_MouseMove);
             // 
             // MapDisplay
             // 
+            this.MapDisplay.ActualLayer = null;
             this.MapDisplay.ActualObjectMap = null;
             this.MapDisplay.Location = new System.Drawing.Point(13, 13);
             this.MapDisplay.Map = null;
             this.MapDisplay.MetadataMap = null;
             this.MapDisplay.Name = "MapDisplay";
             this.MapDisplay.Size = new System.Drawing.Size(679, 485);
+            this.MapDisplay.StampObjectMap = null;
             this.MapDisplay.TabIndex = 0;
             this.MapDisplay.Text = "mapDisplay1";
             this.MapDisplay.Texture = null;
             this.MapDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
-            this.MapDisplay.MouseLeave += new System.EventHandler(this.MapDisplay_MouseLeave);
             this.MapDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
             this.MapDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
             // 
@@ -181,6 +204,8 @@ namespace PrototypeMapEditor.EditorForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1128, 592);
+            this.Controls.Add(this.ButtonImport);
+            this.Controls.Add(this.ButtonExport);
             this.Controls.Add(this.GroupBoxObject);
             this.Controls.Add(this.GroupBoxLayer);
             this.Controls.Add(this.ButtonImportMetadata);
@@ -193,6 +218,8 @@ namespace PrototypeMapEditor.EditorForm
             this.Name = "MapEditor";
             this.Text = "Map Editor";
             this.Load += new System.EventHandler(this.MapEditor_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MapEditor_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MapEditor_KeyUp);
             this.GroupBoxLayer.ResumeLayout(false);
             this.GroupBoxObject.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -214,5 +241,7 @@ namespace PrototypeMapEditor.EditorForm
         private CustomControls.ListBox.DragDropListBox ListBoxLayer;
         private System.Windows.Forms.GroupBox GroupBoxObject;
         private CustomControls.ListBox.DragDropListBox ListBoxObject;
+        private System.Windows.Forms.Button ButtonExport;
+        private System.Windows.Forms.Button ButtonImport;
     }
 }

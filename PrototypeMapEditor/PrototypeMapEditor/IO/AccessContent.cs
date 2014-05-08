@@ -19,9 +19,14 @@ namespace PrototypeMapEditor.IO
             return Directory.GetFiles(FullPath(), "*.xnb").Select(Path.GetFileNameWithoutExtension).ToArray();
         }
 
-        public string GetFullPath(string selectedFile)
+        public string GetBinaryFullPath(string selectedFile)
         {
             return Path.Combine(FullPath(), selectedFile + ".xnb");
+        }
+
+        public string GetFullPathWithoutExtension(string selectedFile)
+        {
+            return Path.Combine(FullPath(), selectedFile);
         }
 
         public string GetSpecifcFolderWithoutExtension(string selectedFile)

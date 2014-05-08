@@ -8,6 +8,7 @@ namespace PrototypeMapEditor.Core
     {
         public string Name { get; set; }
         public string FileName { get; set; }
+        public string MetadataFileName { get; set; }
         public List<Layer> Layers { get; private set; }
         public int Width { get; set; }
         public int Height { get; set; }
