@@ -72,7 +72,10 @@
             this.Controls.Add(this.ButtonMapEditor);
             this.Controls.Add(this.ButtonMetadataEditor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximumSize = new System.Drawing.Size(192, 148);
+            this.MinimumSize = new System.Drawing.Size(192, 148);
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Prototype Editor";
             this.ResumeLayout(false);
 

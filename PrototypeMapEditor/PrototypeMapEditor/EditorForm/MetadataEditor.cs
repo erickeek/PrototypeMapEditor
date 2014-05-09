@@ -30,6 +30,7 @@ namespace PrototypeMapEditor.EditorForm
         public MetadataEditor()
         {
             InitializeComponent();
+            CenterToScreen();
 
             Application.Idle += delegate { UpdateView(); };
         }

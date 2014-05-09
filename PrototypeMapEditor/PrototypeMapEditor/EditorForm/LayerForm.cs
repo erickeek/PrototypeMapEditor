@@ -16,6 +16,8 @@ namespace PrototypeMapEditor.EditorForm
         public LayerForm(Layer layer = null)
         {
             InitializeComponent();
+            CenterToScreen();
+
             Layer = layer ?? new Layer();
             TextColor.BackColor = System.Drawing.Color.White;
 

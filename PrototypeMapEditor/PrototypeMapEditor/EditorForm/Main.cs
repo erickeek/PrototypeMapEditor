@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PrototypeMapEditor.EditorForm
@@ -8,6 +9,7 @@ namespace PrototypeMapEditor.EditorForm
         public Main()
         {
             InitializeComponent();
+            Location = new Point(10, 10);
         }
 
         private void ButtonMetadataEditor_Click(object sender, EventArgs e)

@@ -84,6 +84,7 @@
     <Compile Include="Core\Culture\CultureFacade.cs" />
     <Compile Include="Core\Enum\DrawingMode.cs" />
     <Compile Include="Core\Layer.cs" />
+    <Compile Include="Core\Ledge.cs" />
     <Compile Include="Core\Map.cs" />
     <Compile Include="Core\MetadataMap.cs" />
     <Compile Include="Core\ObjectMap.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="EditorForm\MetadataEditor.Designer.cs">
       <DependentUpon>MetadataEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\EnumHelper.cs" />
     <Compile Include="Helper\FloatHelper.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\IntHelper.cs" />

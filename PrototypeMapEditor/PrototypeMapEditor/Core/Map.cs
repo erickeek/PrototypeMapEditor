@@ -13,14 +13,29 @@ namespace PrototypeMapEditor.Core
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public GridState[,] Grid { get; set; }
+        public List<Ledge> Ledges { get; private set; }
+
         public Map()
         {
             Layers = new List<Layer>();
+            Ledges = new List<Ledge>();
         }
 
         public void AddLayer(Layer layer)
         {
             Layers.Add(layer);
         }
+
+        public void AddLedges(Ledge ledge)
+        {
+            Ledges.Add(ledge);
+        }
+    }
+
+    public enum GridState
+    {
+        None = 0,
+        Solid
     }
 }

@@ -33,22 +33,30 @@ namespace PrototypeMapEditor.EditorForm
             this.HScrollBarMapDisplay = new System.Windows.Forms.HScrollBar();
             this.VScrollBarMapDisplay = new System.Windows.Forms.VScrollBar();
             this.VScrollBarObjectDisplay = new System.Windows.Forms.VScrollBar();
-            this.TextScale = new System.Windows.Forms.TextBox();
+            this.TextZoom = new System.Windows.Forms.TextBox();
             this.ButtonImportMetadata = new System.Windows.Forms.Button();
             this.GroupBoxLayer = new System.Windows.Forms.GroupBox();
             this.ButtonAddLayer = new System.Windows.Forms.Button();
+            this.ListBoxLayer = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.GroupBoxObject = new System.Windows.Forms.GroupBox();
+            this.ListBoxObject = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ButtonExport = new System.Windows.Forms.Button();
             this.ButtonImport = new System.Windows.Forms.Button();
+            this.GroupBoxDrawingMode = new System.Windows.Forms.GroupBox();
             this.RadioListBoxDrawingMode = new PrototypeMapEditor.CustomControls.Radio.RadioListBox();
-            this.ListBoxObject = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
-            this.ListBoxLayer = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
+            this.GroupBoxMap = new System.Windows.Forms.GroupBox();
+            this.LabelPercentZoom = new System.Windows.Forms.Label();
+            this.LabelZoom = new System.Windows.Forms.Label();
+            this.TextBoxMapHeight = new System.Windows.Forms.TextBox();
+            this.TextBoxMapWidth = new System.Windows.Forms.TextBox();
+            this.LabelMapHeight = new System.Windows.Forms.Label();
+            this.LabelMapWidth = new System.Windows.Forms.Label();
             this.ObjectDisplay = new PrototypeMapEditor.CustomControls.ObjectDisplay();
             this.MapDisplay = new PrototypeMapEditor.CustomControls.MapDisplay();
-            this.GroupBoxDrawingMode = new System.Windows.Forms.GroupBox();
             this.GroupBoxLayer.SuspendLayout();
             this.GroupBoxObject.SuspendLayout();
             this.GroupBoxDrawingMode.SuspendLayout();
+            this.GroupBoxMap.SuspendLayout();
             this.SuspendLayout();
             // 
             // HScrollBarMapDisplay
@@ -75,13 +83,14 @@ namespace PrototypeMapEditor.EditorForm
             this.VScrollBarObjectDisplay.TabIndex = 4;
             this.VScrollBarObjectDisplay.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScrollBarObjectDisplay_Scroll);
             // 
-            // TextScale
+            // TextZoom
             // 
-            this.TextScale.Location = new System.Drawing.Point(13, 560);
-            this.TextScale.Name = "TextScale";
-            this.TextScale.Size = new System.Drawing.Size(35, 20);
-            this.TextScale.TabIndex = 5;
-            this.TextScale.Text = "100%";
+            this.TextZoom.Location = new System.Drawing.Point(344, 19);
+            this.TextZoom.Name = "TextZoom";
+            this.TextZoom.Size = new System.Drawing.Size(28, 20);
+            this.TextZoom.TabIndex = 5;
+            this.TextZoom.Text = "100";
+            this.TextZoom.TextChanged += new System.EventHandler(this.TextZoom_TextChanged);
             // 
             // ButtonImportMetadata
             // 
@@ -114,6 +123,22 @@ namespace PrototypeMapEditor.EditorForm
             this.ButtonAddLayer.UseVisualStyleBackColor = true;
             this.ButtonAddLayer.Click += new System.EventHandler(this.ButtonAddLayer_Click);
             // 
+            // ListBoxLayer
+            // 
+            this.ListBoxLayer.AllowDrop = true;
+            this.ListBoxLayer.DisplayMember = "Name";
+            this.ListBoxLayer.FormattingEnabled = true;
+            this.ListBoxLayer.Location = new System.Drawing.Point(7, 20);
+            this.ListBoxLayer.Name = "ListBoxLayer";
+            this.ListBoxLayer.Size = new System.Drawing.Size(171, 95);
+            this.ListBoxLayer.TabIndex = 0;
+            this.ListBoxLayer.ValueMember = "Name";
+            this.ListBoxLayer.SelectedIndexChanged += new System.EventHandler(this.ListBoxLayer_SelectedIndexChanged);
+            this.ListBoxLayer.SelectedValueChanged += new System.EventHandler(this.ListBoxLayer_SelectedValueChanged);
+            this.ListBoxLayer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxLayer_DragDrop);
+            this.ListBoxLayer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxLayer_KeyUp);
+            this.ListBoxLayer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBoxLayer_MouseDoubleClick);
+            // 
             // GroupBoxObject
             // 
             this.GroupBoxObject.Controls.Add(this.ListBoxObject);
@@ -123,6 +148,20 @@ namespace PrototypeMapEditor.EditorForm
             this.GroupBoxObject.TabIndex = 8;
             this.GroupBoxObject.TabStop = false;
             this.GroupBoxObject.Text = "Objects";
+            // 
+            // ListBoxObject
+            // 
+            this.ListBoxObject.AllowDrop = true;
+            this.ListBoxObject.DisplayMember = "Name";
+            this.ListBoxObject.FormattingEnabled = true;
+            this.ListBoxObject.Location = new System.Drawing.Point(7, 20);
+            this.ListBoxObject.Name = "ListBoxObject";
+            this.ListBoxObject.Size = new System.Drawing.Size(171, 186);
+            this.ListBoxObject.TabIndex = 0;
+            this.ListBoxObject.ValueMember = "Name";
+            this.ListBoxObject.SelectedIndexChanged += new System.EventHandler(this.ListBoxObject_SelectedIndexChanged);
+            this.ListBoxObject.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxObject_DragDrop);
+            this.ListBoxObject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxObject_KeyUp);
             // 
             // ButtonExport
             // 
@@ -144,6 +183,16 @@ namespace PrototypeMapEditor.EditorForm
             this.ButtonImport.UseVisualStyleBackColor = true;
             this.ButtonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
+            // GroupBoxDrawingMode
+            // 
+            this.GroupBoxDrawingMode.Controls.Add(this.RadioListBoxDrawingMode);
+            this.GroupBoxDrawingMode.Location = new System.Drawing.Point(933, 397);
+            this.GroupBoxDrawingMode.Name = "GroupBoxDrawingMode";
+            this.GroupBoxDrawingMode.Size = new System.Drawing.Size(183, 101);
+            this.GroupBoxDrawingMode.TabIndex = 12;
+            this.GroupBoxDrawingMode.TabStop = false;
+            this.GroupBoxDrawingMode.Text = "Drawing Mode";
+            // 
             // RadioListBoxDrawingMode
             // 
             this.RadioListBoxDrawingMode.BackColor = System.Drawing.SystemColors.Window;
@@ -151,39 +200,75 @@ namespace PrototypeMapEditor.EditorForm
             this.RadioListBoxDrawingMode.FormattingEnabled = true;
             this.RadioListBoxDrawingMode.Location = new System.Drawing.Point(6, 19);
             this.RadioListBoxDrawingMode.Name = "RadioListBoxDrawingMode";
-            this.RadioListBoxDrawingMode.Size = new System.Drawing.Size(171, 95);
+            this.RadioListBoxDrawingMode.Size = new System.Drawing.Size(171, 69);
             this.RadioListBoxDrawingMode.TabIndex = 11;
             this.RadioListBoxDrawingMode.SelectedIndexChanged += new System.EventHandler(this.RadioListBoxDrawingMode_SelectedIndexChanged);
             // 
-            // ListBoxObject
+            // GroupBoxMap
             // 
-            this.ListBoxObject.AllowDrop = true;
-            this.ListBoxObject.DisplayMember = "Name";
-            this.ListBoxObject.FormattingEnabled = true;
-            this.ListBoxObject.Location = new System.Drawing.Point(7, 20);
-            this.ListBoxObject.Name = "ListBoxObject";
-            this.ListBoxObject.Size = new System.Drawing.Size(171, 186);
-            this.ListBoxObject.TabIndex = 0;
-            this.ListBoxObject.ValueMember = "Name";
-            this.ListBoxObject.SelectedIndexChanged += new System.EventHandler(this.ListBoxObject_SelectedIndexChanged);
-            this.ListBoxObject.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxObject_DragDrop);
-            this.ListBoxObject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxObject_KeyUp);
+            this.GroupBoxMap.Controls.Add(this.TextZoom);
+            this.GroupBoxMap.Controls.Add(this.LabelPercentZoom);
+            this.GroupBoxMap.Controls.Add(this.LabelZoom);
+            this.GroupBoxMap.Controls.Add(this.TextBoxMapHeight);
+            this.GroupBoxMap.Controls.Add(this.TextBoxMapWidth);
+            this.GroupBoxMap.Controls.Add(this.LabelMapHeight);
+            this.GroupBoxMap.Controls.Add(this.LabelMapWidth);
+            this.GroupBoxMap.Location = new System.Drawing.Point(13, 535);
+            this.GroupBoxMap.Name = "GroupBoxMap";
+            this.GroupBoxMap.Size = new System.Drawing.Size(394, 45);
+            this.GroupBoxMap.TabIndex = 13;
+            this.GroupBoxMap.TabStop = false;
+            this.GroupBoxMap.Text = "Map";
             // 
-            // ListBoxLayer
+            // LabelPercentZoom
             // 
-            this.ListBoxLayer.AllowDrop = true;
-            this.ListBoxLayer.DisplayMember = "Name";
-            this.ListBoxLayer.FormattingEnabled = true;
-            this.ListBoxLayer.Location = new System.Drawing.Point(7, 20);
-            this.ListBoxLayer.Name = "ListBoxLayer";
-            this.ListBoxLayer.Size = new System.Drawing.Size(171, 95);
-            this.ListBoxLayer.TabIndex = 0;
-            this.ListBoxLayer.ValueMember = "Name";
-            this.ListBoxLayer.SelectedIndexChanged += new System.EventHandler(this.ListBoxLayer_SelectedIndexChanged);
-            this.ListBoxLayer.SelectedValueChanged += new System.EventHandler(this.ListBoxLayer_SelectedValueChanged);
-            this.ListBoxLayer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListBoxLayer_DragDrop);
-            this.ListBoxLayer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListBoxLayer_KeyUp);
-            this.ListBoxLayer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBoxLayer_MouseDoubleClick);
+            this.LabelPercentZoom.AutoSize = true;
+            this.LabelPercentZoom.Location = new System.Drawing.Point(372, 22);
+            this.LabelPercentZoom.Name = "LabelPercentZoom";
+            this.LabelPercentZoom.Size = new System.Drawing.Size(15, 13);
+            this.LabelPercentZoom.TabIndex = 6;
+            this.LabelPercentZoom.Text = "%";
+            // 
+            // LabelZoom
+            // 
+            this.LabelZoom.AutoSize = true;
+            this.LabelZoom.Location = new System.Drawing.Point(304, 22);
+            this.LabelZoom.Name = "LabelZoom";
+            this.LabelZoom.Size = new System.Drawing.Size(34, 13);
+            this.LabelZoom.TabIndex = 4;
+            this.LabelZoom.Text = "Zoom";
+            // 
+            // TextBoxMapHeight
+            // 
+            this.TextBoxMapHeight.Location = new System.Drawing.Point(198, 19);
+            this.TextBoxMapHeight.Name = "TextBoxMapHeight";
+            this.TextBoxMapHeight.Size = new System.Drawing.Size(100, 20);
+            this.TextBoxMapHeight.TabIndex = 3;
+            // 
+            // TextBoxMapWidth
+            // 
+            this.TextBoxMapWidth.Location = new System.Drawing.Point(48, 19);
+            this.TextBoxMapWidth.Name = "TextBoxMapWidth";
+            this.TextBoxMapWidth.Size = new System.Drawing.Size(100, 20);
+            this.TextBoxMapWidth.TabIndex = 2;
+            // 
+            // LabelMapHeight
+            // 
+            this.LabelMapHeight.AutoSize = true;
+            this.LabelMapHeight.Location = new System.Drawing.Point(154, 22);
+            this.LabelMapHeight.Name = "LabelMapHeight";
+            this.LabelMapHeight.Size = new System.Drawing.Size(38, 13);
+            this.LabelMapHeight.TabIndex = 1;
+            this.LabelMapHeight.Text = "Height";
+            // 
+            // LabelMapWidth
+            // 
+            this.LabelMapWidth.AutoSize = true;
+            this.LabelMapWidth.Location = new System.Drawing.Point(6, 22);
+            this.LabelMapWidth.Name = "LabelMapWidth";
+            this.LabelMapWidth.Size = new System.Drawing.Size(35, 13);
+            this.LabelMapWidth.TabIndex = 0;
+            this.LabelMapWidth.Text = "Width";
             // 
             // ObjectDisplay
             // 
@@ -200,6 +285,7 @@ namespace PrototypeMapEditor.EditorForm
             // 
             this.MapDisplay.ActualLayer = null;
             this.MapDisplay.ActualObjectMap = null;
+            this.MapDisplay.DrawingMode = PrototypeMapEditor.Core.Enum.DrawingMode.SegmentSelection;
             this.MapDisplay.Location = new System.Drawing.Point(13, 13);
             this.MapDisplay.Map = null;
             this.MapDisplay.MetadataMap = null;
@@ -209,32 +295,23 @@ namespace PrototypeMapEditor.EditorForm
             this.MapDisplay.TabIndex = 0;
             this.MapDisplay.Text = "mapDisplay1";
             this.MapDisplay.Texture = null;
+            this.MapDisplay.Zoom = 0;
             this.MapDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
             this.MapDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
             this.MapDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
-            // 
-            // GroupBoxDrawingMode
-            // 
-            this.GroupBoxDrawingMode.Controls.Add(this.RadioListBoxDrawingMode);
-            this.GroupBoxDrawingMode.Location = new System.Drawing.Point(933, 397);
-            this.GroupBoxDrawingMode.Name = "GroupBoxDrawingMode";
-            this.GroupBoxDrawingMode.Size = new System.Drawing.Size(183, 126);
-            this.GroupBoxDrawingMode.TabIndex = 12;
-            this.GroupBoxDrawingMode.TabStop = false;
-            this.GroupBoxDrawingMode.Text = "Drawing Mode";
             // 
             // MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1128, 592);
+            this.Controls.Add(this.GroupBoxMap);
             this.Controls.Add(this.GroupBoxDrawingMode);
             this.Controls.Add(this.ButtonImport);
             this.Controls.Add(this.ButtonExport);
             this.Controls.Add(this.GroupBoxObject);
             this.Controls.Add(this.GroupBoxLayer);
             this.Controls.Add(this.ButtonImportMetadata);
-            this.Controls.Add(this.TextScale);
             this.Controls.Add(this.VScrollBarObjectDisplay);
             this.Controls.Add(this.VScrollBarMapDisplay);
             this.Controls.Add(this.HScrollBarMapDisplay);
@@ -248,8 +325,9 @@ namespace PrototypeMapEditor.EditorForm
             this.GroupBoxLayer.ResumeLayout(false);
             this.GroupBoxObject.ResumeLayout(false);
             this.GroupBoxDrawingMode.ResumeLayout(false);
+            this.GroupBoxMap.ResumeLayout(false);
+            this.GroupBoxMap.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -260,7 +338,7 @@ namespace PrototypeMapEditor.EditorForm
         private System.Windows.Forms.HScrollBar HScrollBarMapDisplay;
         private System.Windows.Forms.VScrollBar VScrollBarMapDisplay;
         private System.Windows.Forms.VScrollBar VScrollBarObjectDisplay;
-        private System.Windows.Forms.TextBox TextScale;
+        private System.Windows.Forms.TextBox TextZoom;
         private System.Windows.Forms.Button ButtonImportMetadata;
         private System.Windows.Forms.GroupBox GroupBoxLayer;
         private System.Windows.Forms.Button ButtonAddLayer;
@@ -271,5 +349,12 @@ namespace PrototypeMapEditor.EditorForm
         private System.Windows.Forms.Button ButtonImport;
         private CustomControls.Radio.RadioListBox RadioListBoxDrawingMode;
         private System.Windows.Forms.GroupBox GroupBoxDrawingMode;
+        private System.Windows.Forms.GroupBox GroupBoxMap;
+        private System.Windows.Forms.Label LabelMapWidth;
+        private System.Windows.Forms.Label LabelMapHeight;
+        private System.Windows.Forms.TextBox TextBoxMapHeight;
+        private System.Windows.Forms.TextBox TextBoxMapWidth;
+        private System.Windows.Forms.Label LabelZoom;
+        private System.Windows.Forms.Label LabelPercentZoom;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -24,11 +25,11 @@ namespace PrototypeMapEditor.EditorForm
         private ObjectMap _lastObjectMapSelected;
         private bool _isMove;
         private bool _controlIsPressed;
-        private DrawingMode _actualDrawingMode;
 
         public MapEditor()
         {
             InitializeComponent();
+            CenterToScreen();
 
             KeyPreview = true;
 
@@ -39,9 +40,9 @@ namespace PrototypeMapEditor.EditorForm
         {
             _accessMap = new AccessMap();
 
-            // 
-            var names = Enum.GetNames(typeof(DrawingMode));
-            RadioListBoxDrawingMode.Items.AddRange(names);
+            var drawingModes = Enum.GetNames(typeof(DrawingMode));
+            RadioListBoxDrawingMode.Items.AddRange(drawingModes);
+            RadioListBoxDrawingMode.SetSelected(0, true);
         }
 
         private void MapEditor_KeyDown(object sender, KeyEventArgs e)
@@ -131,7 +132,7 @@ namespace PrototypeMapEditor.EditorForm
         {
             _currentPosition = CurrentPosition(e);
 
-            switch (_actualDrawingMode)
+            switch (MapDisplay.DrawingMode)
             {
                 case DrawingMode.SegmentSelection:
                     MapDisplayMouseMoveSegmentSelection();
@@ -172,6 +173,26 @@ namespace PrototypeMapEditor.EditorForm
             if (e.Button != MouseButtons.Left)
                 return;
 
+            _currentPosition = CurrentPosition(e);
+
+            switch (MapDisplay.DrawingMode)
+            {
+                case DrawingMode.SegmentSelection:
+                    MapDisplayMouseDownSegmentSelection();
+                    break;
+                case DrawingMode.CollisionMap:
+                    MapDisplayMouseDownCollisionMap();
+                    break;
+            }
+        }
+
+        private void MapDisplayMouseDownCollisionMap()
+        {
+            MapDisplay.SetGridState(_currentPosition.X, _currentPosition.Y);
+        }
+
+        private void MapDisplayMouseDownSegmentSelection()
+        {
             var layer = GetSelectedLayer();
             if (!LayerIsSelected(layer))
                 return;
@@ -187,9 +208,7 @@ namespace PrototypeMapEditor.EditorForm
                 return;
             }
 
-            _currentPosition = CurrentPosition(e);
-
-            var scale = layer.Scale;
+            var scale = layer.Scale * MapDisplay.Zoom;
             var mouseSource = new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1);
 
             var actualObjectMap = layer.ObjectsInMap
@@ -317,7 +336,12 @@ namespace PrototypeMapEditor.EditorForm
 
         private void RadioListBoxDrawingMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _actualDrawingMode = RadioListBoxDrawingMode.SelectedItem.ToString().ToEnum<DrawingMode>();
+            MapDisplay.DrawingMode = RadioListBoxDrawingMode.SelectedItem.ToString().ToEnum<DrawingMode>();
+        }
+
+        private void TextZoom_TextChanged(object sender, EventArgs e)
+        {
+            MapDisplay.Zoom = MathHelper.Clamp(TextZoom.Text.ToInt32() / 100f, 0.1f, 1f);
         }
 
         private void LoadMetadataMap(MetadataMap metadataMap)
@@ -346,6 +370,9 @@ namespace PrototypeMapEditor.EditorForm
 
             MapDisplay.Map = map;
             UpdateListBoxLayer();
+
+            TextBoxMapWidth.Text = map.Width.ToString(CultureInfo.InvariantCulture);
+            TextBoxMapHeight.Text = map.Height.ToString(CultureInfo.InvariantCulture);
         }
 
         private void UpdateLayerIndex()
