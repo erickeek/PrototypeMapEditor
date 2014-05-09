@@ -8,23 +8,19 @@ Funcionalidades finalizadas
 
 Próximas funcionalidades para o editor de metadados do mapa
 * Restringir movimento as bordas da área de desenho
-* Limpar todos marcações
+* Limpar todas marcações
 * Implementar remover ListBoxMaps com keyup delete
 
 Funcionalidades em desenvolvimento
 * Editor de mapa utilizando os metadados
 
 Próximas funcionalidades para o editor de mapa
-* Importar/Exportar mapa
-* Ctrl pressionado para fazer o mouse virar um carimbo com a textura selecionada anteriormente, no evento MouseUp do MapDisplay criar o objeto na posição do mouse
-
 * Utilizar porcentagem do formulário para fazer zoom no MapDisplay
 * Criar opção para definir tamanho do MapDisplay
 * Criar opção para fazer a grid
 * Criar opção para fazer o ledge
 * Implementar um PictureBox para "transportar" a imagem do ObjectDisplay para MapDisplay visualmente
-* Bug: Ao entrar no editor de metadados e depois entrar no editor de mapa o ObjectDisplay muda
-* Bug: Quando Ctrl pressionado depois de ter inserido objeto normalmente ele fica posicionado de forma errada
+* Bug: Ao entrar no editor de metadados e depois entrar no editor de mapa o ObjectDisplay muda proporção dos objetos
 
 Funcionalidades Futuras
 * Editor metadados para personagens

@@ -44,9 +44,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="maps\maps1.bdm">
+      <Name>maps1</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Processor>PassThroughProcessor</Processor>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="maps\maps1.bmm">
       <Name>maps1</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Processor>PassThroughProcessor</Processor>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

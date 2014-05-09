@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using PrototypeMapEditor.Core;
+using PrototypeMapEditor.Core.Enum;
 using PrototypeMapEditor.CustomControls.Dialog;
 using PrototypeMapEditor.Helper;
 using PrototypeMapEditor.IO;
@@ -20,9 +21,10 @@ namespace PrototypeMapEditor.EditorForm
         private AccessMap _accessMap;
         private Point _offset;
         private Point _currentPosition;
+        private ObjectMap _lastObjectMapSelected;
         private bool _isMove;
         private bool _controlIsPressed;
-        private ObjectMap _lastObjectMap;
+        private DrawingMode _actualDrawingMode;
 
         public MapEditor()
         {
@@ -36,6 +38,10 @@ namespace PrototypeMapEditor.EditorForm
         private void MapEditor_Load(object sender, EventArgs e)
         {
             _accessMap = new AccessMap();
+
+            // 
+            var names = Enum.GetNames(typeof(DrawingMode));
+            RadioListBoxDrawingMode.Items.AddRange(names);
         }
 
         private void MapEditor_KeyDown(object sender, KeyEventArgs e)
@@ -108,7 +114,7 @@ namespace PrototypeMapEditor.EditorForm
             if (!LayerIsSelected(layer))
                 return;
 
-            _lastObjectMap = objectMap;
+            _lastObjectMapSelected = objectMap;
             if (!_controlIsPressed)
             {
                 layer.AddObjectMap(objectMap.Clone(), MapDisplay.Position);
@@ -123,13 +129,26 @@ namespace PrototypeMapEditor.EditorForm
 
         private void MapDisplay_MouseMove(object sender, MouseEventArgs e)
         {
-            var position = new Vector2(_currentPosition.X - _offset.X, _currentPosition.Y - _offset.Y);
             _currentPosition = CurrentPosition(e);
 
+            switch (_actualDrawingMode)
+            {
+                case DrawingMode.SegmentSelection:
+                    MapDisplayMouseMoveSegmentSelection();
+                    break;
+                case DrawingMode.CollisionMap:
+                    break;
+            }
+
+            UpdateView();
+        }
+
+        private void MapDisplayMouseMoveSegmentSelection()
+        {
             if (_controlIsPressed)
             {
-                if (_lastObjectMap != null && MapDisplay.StampObjectMap == null)
-                    MapDisplay.StampObjectMap = _lastObjectMap.Clone();
+                if (_lastObjectMapSelected != null && MapDisplay.StampObjectMap == null)
+                    MapDisplay.StampObjectMap = _lastObjectMapSelected.Clone();
             }
             else
             {
@@ -138,15 +157,14 @@ namespace PrototypeMapEditor.EditorForm
 
             if (MapDisplay.StampObjectMap != null)
             {
-                MapDisplay.StampObjectMap.Position = position;
+                MapDisplay.StampObjectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y);
             }
 
             if (_isMove)
             {
+                var position = new Vector2(_currentPosition.X - _offset.X, _currentPosition.Y - _offset.Y);
                 MapDisplay.ActualObjectMap.Position = position;
             }
-
-            UpdateView();
         }
 
         private void MapDisplay_MouseDown(object sender, MouseEventArgs e)
@@ -294,7 +312,12 @@ namespace PrototypeMapEditor.EditorForm
 
         private void ListBoxObject_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _lastObjectMap = (ObjectMap)ListBoxObject.SelectedItem;
+            _lastObjectMapSelected = (ObjectMap)ListBoxObject.SelectedItem;
+        }
+
+        private void RadioListBoxDrawingMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _actualDrawingMode = RadioListBoxDrawingMode.SelectedItem.ToString().ToEnum<DrawingMode>();
         }
 
         private void LoadMetadataMap(MetadataMap metadataMap)

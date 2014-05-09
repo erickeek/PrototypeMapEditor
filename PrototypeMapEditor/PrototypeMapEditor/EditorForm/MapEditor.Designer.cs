@@ -40,12 +40,15 @@ namespace PrototypeMapEditor.EditorForm
             this.GroupBoxObject = new System.Windows.Forms.GroupBox();
             this.ButtonExport = new System.Windows.Forms.Button();
             this.ButtonImport = new System.Windows.Forms.Button();
+            this.RadioListBoxDrawingMode = new PrototypeMapEditor.CustomControls.Radio.RadioListBox();
             this.ListBoxObject = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ListBoxLayer = new PrototypeMapEditor.CustomControls.ListBox.DragDropListBox();
             this.ObjectDisplay = new PrototypeMapEditor.CustomControls.ObjectDisplay();
             this.MapDisplay = new PrototypeMapEditor.CustomControls.MapDisplay();
+            this.GroupBoxDrawingMode = new System.Windows.Forms.GroupBox();
             this.GroupBoxLayer.SuspendLayout();
             this.GroupBoxObject.SuspendLayout();
+            this.GroupBoxDrawingMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // HScrollBarMapDisplay
@@ -141,6 +144,17 @@ namespace PrototypeMapEditor.EditorForm
             this.ButtonImport.UseVisualStyleBackColor = true;
             this.ButtonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
+            // RadioListBoxDrawingMode
+            // 
+            this.RadioListBoxDrawingMode.BackColor = System.Drawing.SystemColors.Window;
+            this.RadioListBoxDrawingMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.RadioListBoxDrawingMode.FormattingEnabled = true;
+            this.RadioListBoxDrawingMode.Location = new System.Drawing.Point(6, 19);
+            this.RadioListBoxDrawingMode.Name = "RadioListBoxDrawingMode";
+            this.RadioListBoxDrawingMode.Size = new System.Drawing.Size(171, 95);
+            this.RadioListBoxDrawingMode.TabIndex = 11;
+            this.RadioListBoxDrawingMode.SelectedIndexChanged += new System.EventHandler(this.RadioListBoxDrawingMode_SelectedIndexChanged);
+            // 
             // ListBoxObject
             // 
             this.ListBoxObject.AllowDrop = true;
@@ -199,11 +213,22 @@ namespace PrototypeMapEditor.EditorForm
             this.MapDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
             this.MapDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);
             // 
+            // GroupBoxDrawingMode
+            // 
+            this.GroupBoxDrawingMode.Controls.Add(this.RadioListBoxDrawingMode);
+            this.GroupBoxDrawingMode.Location = new System.Drawing.Point(933, 397);
+            this.GroupBoxDrawingMode.Name = "GroupBoxDrawingMode";
+            this.GroupBoxDrawingMode.Size = new System.Drawing.Size(183, 126);
+            this.GroupBoxDrawingMode.TabIndex = 12;
+            this.GroupBoxDrawingMode.TabStop = false;
+            this.GroupBoxDrawingMode.Text = "Drawing Mode";
+            // 
             // MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1128, 592);
+            this.Controls.Add(this.GroupBoxDrawingMode);
             this.Controls.Add(this.ButtonImport);
             this.Controls.Add(this.ButtonExport);
             this.Controls.Add(this.GroupBoxObject);
@@ -222,6 +247,7 @@ namespace PrototypeMapEditor.EditorForm
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MapEditor_KeyUp);
             this.GroupBoxLayer.ResumeLayout(false);
             this.GroupBoxObject.ResumeLayout(false);
+            this.GroupBoxDrawingMode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,5 +269,7 @@ namespace PrototypeMapEditor.EditorForm
         private CustomControls.ListBox.DragDropListBox ListBoxObject;
         private System.Windows.Forms.Button ButtonExport;
         private System.Windows.Forms.Button ButtonImport;
+        private CustomControls.Radio.RadioListBox RadioListBoxDrawingMode;
+        private System.Windows.Forms.GroupBox GroupBoxDrawingMode;
     }
 }
