@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrototypeMapEditor", "PrototypeMapEditor\PrototypeMapEditor\PrototypeMapEditor.csproj", "{5977C609-D3BA-4329-B501-7079BECECFD6}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "PrototypeMapEditorContent", "PrototypeMapEditor\PrototypeMapEditorContent\PrototypeMapEditorContent.contentproj", "{FB2E4B44-6B5F-4143-9436-D476161BE5F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrototypeMapEditorContent", "PrototypeMapEditor\PrototypeMapEditorContent\PrototypeMapEditorContent.contentproj", "{FB2E4B44-6B5F-4143-9436-D476161BE5F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoMap", "DemoMap\DemoMap\DemoMap.csproj", "{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "DemoMapContent", "DemoMap\DemoMapContent\DemoMapContent.contentproj", "{43C65620-0614-4241-B305-B514C4E8A6D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype.Core", "Prototype.Core\Prototype.Core.csproj", "{26BDD780-1A8B-4A63-968D-B88CEC918CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +25,16 @@ Global
 		{5977C609-D3BA-4329-B501-7079BECECFD6}.Release|x86.Build.0 = Release|x86
 		{FB2E4B44-6B5F-4143-9436-D476161BE5F9}.Debug|x86.ActiveCfg = Debug|x86
 		{FB2E4B44-6B5F-4143-9436-D476161BE5F9}.Release|x86.ActiveCfg = Release|x86
+		{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}.Debug|x86.ActiveCfg = Debug|x86
+		{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}.Debug|x86.Build.0 = Debug|x86
+		{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}.Release|x86.ActiveCfg = Release|x86
+		{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}.Release|x86.Build.0 = Release|x86
+		{43C65620-0614-4241-B305-B514C4E8A6D4}.Debug|x86.ActiveCfg = Debug|x86
+		{43C65620-0614-4241-B305-B514C4E8A6D4}.Release|x86.ActiveCfg = Release|x86
+		{26BDD780-1A8B-4A63-968D-B88CEC918CF5}.Debug|x86.ActiveCfg = Debug|x86
+		{26BDD780-1A8B-4A63-968D-B88CEC918CF5}.Debug|x86.Build.0 = Debug|x86
+		{26BDD780-1A8B-4A63-968D-B88CEC918CF5}.Release|x86.ActiveCfg = Release|x86
+		{26BDD780-1A8B-4A63-968D-B88CEC918CF5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

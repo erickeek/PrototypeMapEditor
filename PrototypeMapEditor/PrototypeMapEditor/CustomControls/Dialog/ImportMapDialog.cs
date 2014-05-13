@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Forms;
-using PrototypeMapEditor.IO;
+using Prototype.Core.IO;
 
 namespace PrototypeMapEditor.CustomControls.Dialog
 {

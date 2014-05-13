@@ -285,7 +285,7 @@ namespace PrototypeMapEditor.EditorForm
             // 
             this.MapDisplay.ActualLayer = null;
             this.MapDisplay.ActualObjectMap = null;
-            this.MapDisplay.DrawingMode = PrototypeMapEditor.Core.Enum.DrawingMode.SegmentSelection;
+            this.MapDisplay.DrawingMode = Prototype.Core.Enum.DrawingMode.SegmentSelection;
             this.MapDisplay.Location = new System.Drawing.Point(13, 13);
             this.MapDisplay.Map = null;
             this.MapDisplay.MetadataMap = null;
@@ -294,8 +294,6 @@ namespace PrototypeMapEditor.EditorForm
             this.MapDisplay.StampObjectMap = null;
             this.MapDisplay.TabIndex = 0;
             this.MapDisplay.Text = "mapDisplay1";
-            this.MapDisplay.Texture = null;
-            this.MapDisplay.Zoom = 0;
             this.MapDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseDown);
             this.MapDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseMove);
             this.MapDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapDisplay_MouseUp);

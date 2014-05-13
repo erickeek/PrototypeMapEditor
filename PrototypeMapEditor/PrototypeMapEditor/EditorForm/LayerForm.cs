@@ -2,8 +2,8 @@
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using PrototypeMapEditor.Core;
-using PrototypeMapEditor.Helper;
+using Prototype.Core;
+using Prototype.Core.Helper;
 
 namespace PrototypeMapEditor.EditorForm
 {

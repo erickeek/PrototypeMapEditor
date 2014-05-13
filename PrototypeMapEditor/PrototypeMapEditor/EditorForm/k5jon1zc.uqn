@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using Prototype.Core.IO;
-using Prototype.Core;
-using Prototype.Core.Enum;
-using Prototype.Core.Helper;
+using PrototypeMapEditor.Core;
+using PrototypeMapEditor.Core.Enum;
 using PrototypeMapEditor.CustomControls.Dialog;
+using PrototypeMapEditor.Helper;
+using PrototypeMapEditor.IO;
 using Point = System.Drawing.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -118,7 +118,7 @@ namespace PrototypeMapEditor.EditorForm
             _lastObjectMapSelected = objectMap;
             if (!_controlIsPressed)
             {
-                layer.AddObjectMap(objectMap.Clone(), MapDisplay.Map.Camera);
+                layer.AddObjectMap(objectMap.Clone(), MapDisplay.Position);
                 UpdateListBoxObject(layer);
             }
         }
@@ -158,13 +158,15 @@ namespace PrototypeMapEditor.EditorForm
 
             if (MapDisplay.StampObjectMap != null)
             {
-                MapDisplay.StampObjectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y);
+                var layer = GetSelectedLayer();
+                MapDisplay.StampObjectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y) * layer.Scale * MapDisplay.Zoom;
             }
 
             if (_isMove)
             {
+                var layer = GetSelectedLayer();
                 var position = new Vector2(_currentPosition.X - _offset.X, _currentPosition.Y - _offset.Y);
-                MapDisplay.ActualObjectMap.Position = position;
+                MapDisplay.ActualObjectMap.Position = position * layer.Scale * MapDisplay.Zoom;
             }
         }
 
@@ -197,24 +199,23 @@ namespace PrototypeMapEditor.EditorForm
             if (!LayerIsSelected(layer))
                 return;
 
-            var scale = layer.Scale * MapDisplay.Map.Zoom;
-
             if (_controlIsPressed)
             {
                 var objectMap = MapDisplay.StampObjectMap.Clone();
-                layer.AddObjectMap(objectMap, MapDisplay.Map.Camera);
-                objectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y) / scale;
+                layer.AddObjectMap(objectMap, MapDisplay.Position);
+                objectMap.Position = new Vector2(_currentPosition.X, _currentPosition.Y);
 
                 UpdateListBoxObject(layer);
                 UpdateView();
                 return;
             }
 
+            var scale = layer.Scale * MapDisplay.Zoom;
             var mouseSource = new Rectangle(_currentPosition.X, _currentPosition.Y, 1, 1);
 
             var actualObjectMap = layer.ObjectsInMap
                 .OrderByDescending(o => o.DrawOrder)
-                .FirstOrDefault(o => o.ScalingPosition(scale)
+                .FirstOrDefault(o => o.Scaling(scale)
                 .Intersects(mouseSource));
 
             MapDisplay.ActualObjectMap = actualObjectMap;
@@ -338,13 +339,11 @@ namespace PrototypeMapEditor.EditorForm
         private void RadioListBoxDrawingMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             MapDisplay.DrawingMode = RadioListBoxDrawingMode.SelectedItem.ToString().ToEnum<DrawingMode>();
-
-            ObjectDisplay.Visible = MapDisplay.DrawingMode == DrawingMode.SegmentSelection;
         }
 
         private void TextZoom_TextChanged(object sender, EventArgs e)
         {
-            MapDisplay.Map.Zoom = MathHelper.Clamp(TextZoom.Text.ToInt32() / 100f, 0.1f, 1f);
+            MapDisplay.Zoom = MathHelper.Clamp(TextZoom.Text.ToInt32() / 100f, 0.1f, 1f);
         }
 
         private void LoadMetadataMap(MetadataMap metadataMap)
@@ -416,8 +415,8 @@ namespace PrototypeMapEditor.EditorForm
 
         private void UpdateScrollMapDisplay()
         {
-            MapDisplay.Map.Camera.X = -HScrollBarMapDisplay.Value * ScrollScale;
-            MapDisplay.Map.Camera.Y = -VScrollBarMapDisplay.Value * ScrollScale;
+            MapDisplay.Position.X = -HScrollBarMapDisplay.Value * ScrollScale;
+            MapDisplay.Position.Y = -VScrollBarMapDisplay.Value * ScrollScale;
             UpdateView();
         }
 
@@ -437,7 +436,7 @@ namespace PrototypeMapEditor.EditorForm
 
         private Point CurrentPosition(MouseEventArgs e)
         {
-            return new Point((int)(e.Location.X - MapDisplay.Map.Camera.X), (int)(e.Location.Y - MapDisplay.Map.Camera.Y));
+            return new Point((int)(e.Location.X - MapDisplay.Position.X), (int)(e.Location.Y - MapDisplay.Position.Y));
         }
 
         private Layer GetSelectedLayer()

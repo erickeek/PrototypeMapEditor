@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{5977C609-D3BA-4329-B501-7079BECECFD6}</ProjectGuid>
+    <ProjectGuid>{C0CAA0AE-617D-4AD4-AA41-8F7F5CAACD2E}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PrototypeMapEditor</RootNamespace>
-    <AssemblyName>PrototypeMapEditor</AssemblyName>
+    <RootNamespace>DemoMap</RootNamespace>
+    <AssemblyName>DemoMap</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>Reach</XnaProfile>
-    <XnaCrossPlatformGroupID>4b786768-97b5-444a-99a2-2a0bca1ecbc2</XnaCrossPlatformGroupID>
+    <XnaCrossPlatformGroupID>bb97ec2a-d15b-4685-b09b-96f5872e8da8</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
@@ -61,81 +61,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomControls\Dialog\ExportMapDialog.cs" />
-    <Compile Include="CustomControls\Dialog\ExportMetadataMapDialog.cs" />
-    <Compile Include="CustomControls\Dialog\ImportMapDialog.cs" />
-    <Compile Include="CustomControls\Dialog\ImportMetadataMapDialog.cs" />
-    <Compile Include="CustomControls\ListBox\DragDropListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControls\ListBox\DroppedEventArgs.cs" />
-    <Compile Include="CustomControls\ListBox\IDragDropSource.cs" />
-    <Compile Include="CustomControls\ListBox\VisualCue.cs" />
-    <Compile Include="CustomControls\ListBox\Win32.cs" />
-    <Compile Include="CustomControls\MapDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControls\MetadataDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControls\ObjectDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControls\Radio\RadioListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="EditorForm\LayerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorForm\LayerForm.Designer.cs">
-      <DependentUpon>LayerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorForm\Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorForm\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorForm\MapEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorForm\MapEditor.Designer.cs">
-      <DependentUpon>MapEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorForm\MetadataEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorForm\MetadataEditor.Designer.cs">
-      <DependentUpon>MetadataEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="MainGame.cs" />
-    <Compile Include="WinformsGraphicDevice\GraphicsDeviceControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WinformsGraphicDevice\GraphicsDeviceService.cs" />
-    <Compile Include="WinformsGraphicDevice\ServiceContainer.cs" />
+    <Compile Include="RandomHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -148,8 +88,8 @@
       <Project>{26bdd780-1a8b-4a63-968d-b88cec918cf5}</Project>
       <Name>Prototype.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PrototypeMapEditorContent\PrototypeMapEditorContent.contentproj">
-      <Name>PrototypeMapEditorContent</Name>
+    <ProjectReference Include="..\DemoMapContent\DemoMapContent.contentproj">
+      <Name>DemoMapContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
@@ -175,24 +115,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EditorForm\LayerForm.resx">
-      <DependentUpon>LayerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorForm\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorForm\MapEditor.resx">
-      <DependentUpon>MapEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorForm\MetadataEditor.resx">
-      <DependentUpon>MetadataEditor.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

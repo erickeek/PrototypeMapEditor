@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PrototypeMapEditor.Core;
+using Prototype.Core;
 using WinFormsGraphicsDevice;
 
 namespace PrototypeMapEditor.CustomControls
@@ -27,10 +27,10 @@ namespace PrototypeMapEditor.CustomControls
             _content = new ContentManager(Services, "Content");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
             _nullTexture = _content.Load<Texture2D>("1x1");
 
-            _viewportWidth = GraphicsDevice.Viewport.Width;
+            _viewportWidth = Width;
+            //_viewportWidth = GraphicsDevice.Viewport.Width;
             _viewportMiddle = _viewportWidth / 2f;
         }
 

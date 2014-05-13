@@ -1,13 +1,13 @@
-﻿using Prototype.Core;
-using Prototype.Core.Helper;
-using Prototype.Core.IO;
-using PrototypeMapEditor.CustomControls.Dialog;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Prototype.Core;
+using Prototype.Core.IO;
+using Prototype.Core.Helper;
+using PrototypeMapEditor.CustomControls.Dialog;
 using Point = System.Drawing.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 

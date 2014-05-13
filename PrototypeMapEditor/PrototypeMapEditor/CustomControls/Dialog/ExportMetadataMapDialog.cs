@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
-using PrototypeMapEditor.Core;
-using PrototypeMapEditor.IO;
+using Prototype.Core;
+using Prototype.Core.IO;
 
 namespace PrototypeMapEditor.CustomControls.Dialog
 {
